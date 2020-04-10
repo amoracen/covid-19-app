@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">COVID-19 UPDATE</string>
+    <string name="welcome">Welcome!</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="find_information">Find information about COVID-19</string>
+    <string name="login">LOGIN</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="create_a_new_account">Create an Account</string>
+    <string name="already_a_member">Already a Member?</string>
+    <string name="user_email">user email</string>
+    <string name="logout">Logout</string>
+    <string name="home_page">Home Page</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="search">Search</string>
+    <string name="worldwide_stats">Worldwide Stats</string>
+    <string name="countries_stats">Countries Stats</string>
+    <string name="news">News</string>
+    <string name="novel_contries_stats">Novel Contries Stats</string>
+    <string name="country_s_flag">Country\'s flag</string>
+    <string name="us_states_stats">US States Stats</string>
+</resources>

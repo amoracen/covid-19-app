@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="fau.amoracen.covid_19update.ui.homeActivity.countries.CountriesFragment">
+
+    <TextView
+        android:id="@+id/novelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorDarkGreen"
+        android:fontFamily="@font/bevan"
+        android:text="Countries Fragment API 2"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/flagsTextView"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:padding="5dp"
+                    android:text="Flags"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/CountryTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Country"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/CasesTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Total Confirmed"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/todayCasesTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="New Confirmed"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/TotalRecoveredTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Total Recovered"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/activeTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Active"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/deathsTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Total Deaths"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/todayDeathsTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="New Deaths"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/criticalTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Critical"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/casesPerOneMillionTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Cases Per One Million"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/deathsPerOneMillionTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Deaths Per One Million"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/testTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Number of Tested"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/testsPerOneMillionTextView"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_border"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="Tested Per One Million"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkGreen"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/countriesRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>
