@@ -1,10 +1,12 @@
 package fau.amoracen.covid_19update.ui.mainActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +18,12 @@ import fau.amoracen.covid_19update.R;
 
 /**
  * WelcomeFragment displays the welcome message and
- * the button to navigate to registration
- * or login.
+ * the buttons to navigate to registration
+ * ,login with email or login with Google.
  */
 public class WelcomeFragment extends Fragment {
+
+    private WelcomeFragmentListener WelcomeFragmentListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -31,7 +35,8 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button loginButton = view.findViewById(R.id.loginButton);
+
+        Button loginButton = view.findViewById(R.id.loginWithEmailButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,6 +50,38 @@ public class WelcomeFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registrationFragment, null);
             }
         });
+        Button loginWithGoogle = view.findViewById(R.id.loginWithGoogleButton);
+        final ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        loginWithGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                WelcomeFragmentListener.onClickEvent(getView());
+            }
+        });
+    }
 
+    /**
+     * Interface used in MainActivity to Login with Google Account
+     */
+    public interface WelcomeFragmentListener {
+        void onClickEvent(View view);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof WelcomeFragmentListener) {
+            WelcomeFragmentListener = (WelcomeFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement WelcomeFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        WelcomeFragmentListener = null;
     }
 }
