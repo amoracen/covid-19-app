@@ -11,16 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.homeActivity.countries.CountryActivity"></activity>
-        <activity android:name=".ui.homeActivity.us_states.USStatesActivity"></activity>
+        <activity android:name=".ui.homeActivity.countries.CountryActivity" />
+        <activity android:name=".ui.homeActivity.us_states.USStatesActivity" />
         <activity android:name=".ui.homeActivity.HomeActivity">
+
+        </activity>
+        <activity android:name=".ui.mainActivity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.mainActivity.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
