@@ -1,8 +1,10 @@
 package fau.amoracen.covid_19update.ui.mainActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import fau.amoracen.covid_19update.R;
+import java.util.HashMap;
+import java.util.Objects;
 
-public class RegistrationFragment extends Fragment {
+import fau.amoracen.covid_19update.R;
+import fau.amoracen.covid_19update.service.FirebaseUtil;
+import fau.amoracen.covid_19update.ui.homeActivity.HomeActivity;
+
+/**
+ * Manages Registration Form
+ */
+public class RegistrationFragment extends Fragment implements FirebaseUtil.FirebaseUtilListener {
 
     private EditText emailEditText, passwordEditText;
+    private String email, password;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -56,22 +67,8 @@ public class RegistrationFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-
-                if (email.isEmpty()) {
-                    /*TODO VALIDATE EMAIL*/
-                    emailEditText.setError("Please enter your email address");
-                    emailEditText.setText("");
-                    emailEditText.requestFocus();
-                } else if (password.isEmpty()) {
-                    passwordEditText.setError("Please enter your password");
-                    passwordEditText.setText("");
-                    passwordEditText.requestFocus();
-                } else {
-                    /*TODO FIREBASE*/
-                    Toast.makeText(getContext(), "Check Firebase", Toast.LENGTH_LONG).show();
-                    Navigation.findNavController(view).navigate(R.id.action_registrationFragment_to_LoginFragment, null);
+                if (checkEmailAndPassword()) {
+                    createAccount();
                 }
             }
         });
@@ -85,4 +82,53 @@ public class RegistrationFragment extends Fragment {
         });
     }
 
+    /**
+     * Connect with Firebase to create a new account
+     */
+    private void createAccount() {
+        FirebaseUtil.getInstance().createUserWithEmailAndPassword(email, password, this);
+    }
+
+    /**
+     * Validate Email and Password
+     *
+     * @return true is both are valid
+     */
+    private boolean checkEmailAndPassword() {
+        email = emailEditText.getText().toString();
+
+        HashMap hmap = FirebaseUtil.getInstance().validateEmail(getContext(), email);
+        if (!Objects.equals(hmap.get("message"), "Valid")) {
+            emailEditText.setError(Objects.requireNonNull(hmap.get("message")).toString());
+            emailEditText.setText("");
+            emailEditText.requestFocus();
+            return false;
+        }
+        password = passwordEditText.getText().toString();
+        hmap = FirebaseUtil.getInstance().validatePassword(getContext(), password);
+        if (!Objects.equals(hmap.get("message"), "Valid")) {
+            passwordEditText.setError(Objects.requireNonNull(hmap.get("message")).toString());
+            passwordEditText.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Get result from Firebase registration listener
+     *
+     * @param result a string
+     */
+    @Override
+    public void onCompleteSendResult(String result) {
+        if (result.contains("Success")) {
+            //Go to Home Screen
+            Intent goToHomeScreen = new Intent(getContext(), HomeActivity.class);
+            startActivity(goToHomeScreen);
+            Objects.requireNonNull(getActivity()).finishAffinity();
+        } else {
+            Log.i("Failed Registration", result);
+            Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+        }
+    }
 }
