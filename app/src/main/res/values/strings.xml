@@ -20,7 +20,15 @@
     <string name="worldwide_stats">Worldwide Stats</string>
     <string name="countries_stats">Countries Stats</string>
     <string name="news">News</string>
-    <string name="novel_contries_stats">Novel Contries Stats</string>
     <string name="country_s_flag">Country\'s flag</string>
     <string name="us_states_stats">US States Stats</string>
+    <string name="sign_in_with_email">Sign in with Email</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="email_cannot_be_empty">Field for email can\'t be empty</string>
+    <string name="email_not_valid">Please enter a valid email address</string>
+    <string name="field_cannot_be_empty">Field can\'t be empty</string>
+    <string name="password_letters">Password must include a letter</string>
+    <string name="password_digits">Password must include at least one digit</string>
+    <string name="password_whiteSpaces">No white spaces allowed</string>
+    <string name="password_characters">Password must be at least 6 characters long</string>
 </resources>
