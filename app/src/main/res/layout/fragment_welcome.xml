@@ -1,45 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcomeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/welcomeFragment"
-    android:background="@drawable/background_welcome_screen"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context="fau.amoracen.covid_19update.ui.mainActivity.WelcomeFragment">
 
-    <TextView
-        android:id="@+id/welcomeTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/bevan"
-        android:text="@string/welcome"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="34sp" />
+        android:background="@drawable/background_dark_green"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-    <TextView
-        android:id="@+id/welcomeTextView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/find_information"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/welcomeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/bevan"
+            android:text="@string/welcome"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/welcomeTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/find_information"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/loginWithEmailButton"
+        style="@style/WelcomeScreenButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/button_background"
-        android:text="@string/login"
-        android:textColor="#ffffff"
-        android:textSize="24sp" />
+        android:drawableStart="@drawable/ic_email_white_25dp"
+        android:drawablePadding="10dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="26dp"
+        android:text="@string/sign_in_with_email" />
+
+    <Button
+        android:id="@+id/loginWithGoogleButton"
+        style="@style/WelcomeScreenButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_google_logo"
+        android:drawablePadding="10dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="26dp"
+        android:text="@string/sign_in_with_google" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/WelcomeScreenButtonStyle"
+        android:minWidth="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+    </ProgressBar>
     <!-- Other views -->
     <Space
         android:layout_width="0dp"
