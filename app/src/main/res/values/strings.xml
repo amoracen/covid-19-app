@@ -17,7 +17,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search">Search</string>
-    <string name="worldwide_stats">Worldwide Stats</string>
     <string name="countries_stats">Countries Stats</string>
     <string name="news">News</string>
     <string name="country_s_flag">Country\'s flag</string>
@@ -31,4 +30,19 @@
     <string name="password_digits">Password must include at least one digit</string>
     <string name="password_whiteSpaces">No white spaces allowed</string>
     <string name="password_characters">Password must be at least 6 characters long</string>
+    <string name="worldwide_stats">Worldwide Stats</string>
+    <string name="refresh">Refresh</string>
+    <string name="data_updated">Data Updated</string>
+    <string name="affected_countries">Affected Countries</string>
+    <string name="test_per_one_million">Test Per One Million</string>
+    <string name="total_test">Total Test</string>
+    <string name="deaths_per_one_million">Deaths Per One Million</string>
+    <string name="cases_per_one_million">Cases Per One Million</string>
+    <string name="new_deaths">New Deaths</string>
+    <string name="deaths">Deaths</string>
+    <string name="critical_cases">Critical Cases</string>
+    <string name="active_cases">Active Cases</string>
+    <string name="recovered">Recovered</string>
+    <string name="new_cases">New Cases</string>
+    <string name="total_confirmed_cases">Total Confirmed Cases</string>
 </resources>
