@@ -4,9 +4,10 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Locale;
 
 public class GlobalStats implements Serializable {
-    private final static String URL = "https://corona.lmao.ninja/all";
+    public final static String URL = "https://corona.lmao.ninja/v2/all";
     private String updated;
     private String cases;
     private String todayCases;
@@ -53,7 +54,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getCases() {
-        return cases;
+        return formatNumber(cases);
     }
 
     public void setCases(String cases) {
@@ -61,7 +62,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getTodayCases() {
-        return todayCases;
+        return formatNumber(todayCases);
     }
 
     public void setTodayCases(String todayCases) {
@@ -69,7 +70,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getRecovered() {
-        return recovered;
+        return formatNumber(recovered);
     }
 
     public void setRecovered(String recovered) {
@@ -77,7 +78,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getActive() {
-        return active;
+        return formatNumber(active);
     }
 
     public void setActive(String active) {
@@ -85,7 +86,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getCritical() {
-        return critical;
+        return formatNumber(critical);
     }
 
     public void setCritical(String critical) {
@@ -93,7 +94,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getCasesPerOneMillion() {
-        return casesPerOneMillion;
+        return formatNumberTwoDecimalPlaces(casesPerOneMillion);
     }
 
     public void setCasesPerOneMillion(String casesPerOneMillion) {
@@ -101,7 +102,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getDeathsPerOneMillion() {
-        return deathsPerOneMillion;
+        return formatNumberTwoDecimalPlaces(deathsPerOneMillion);
     }
 
     public void setDeathsPerOneMillion(String deathsPerOneMillion) {
@@ -109,7 +110,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getTests() {
-        return tests;
+        return formatNumber(tests);
     }
 
     public void setTests(String tests) {
@@ -117,7 +118,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getTestsPerOneMillion() {
-        return testsPerOneMillion;
+        return formatNumberTwoDecimalPlaces(testsPerOneMillion);
     }
 
     public void setTestsPerOneMillion(String testsPerOneMillion) {
@@ -125,7 +126,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getAffectedCountries() {
-        return affectedCountries;
+        return formatNumber(affectedCountries);
     }
 
     public void setAffectedCountries(String affectedCountries) {
@@ -133,7 +134,7 @@ public class GlobalStats implements Serializable {
     }
 
     public String getDeaths() {
-        return deaths;
+        return formatNumber(deaths);
     }
 
     public void setDeaths(String deaths) {
@@ -141,10 +142,26 @@ public class GlobalStats implements Serializable {
     }
 
     public String getTodayDeaths() {
-        return todayDeaths;
+        return formatNumber(todayDeaths);
     }
 
     public void setTodayDeaths(String todayDeaths) {
         this.todayDeaths = todayDeaths;
+    }
+
+    public String formatNumberTwoDecimalPlaces(String number) {
+        if (number == null) {
+            return "0";
+        }
+        double num = Double.parseDouble(number);
+        return String.format(Locale.getDefault(), "%,.2f", num);
+    }
+
+    public String formatNumber(String number) {
+        if (number == null) {
+            return "0";
+        }
+        double num = Double.parseDouble(number);
+        return String.format(Locale.getDefault(), "%,.0f", num);
     }
 }
