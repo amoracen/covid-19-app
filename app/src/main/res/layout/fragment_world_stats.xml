@@ -1,60 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/loginFragment"
+    android:id="@+id/worldFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context="fau.amoracen.covid_19update.ui.homeActivity.api1.CountriesFragment">
-
-    <TextView
-        android:id="@+id/welcomeTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorDarkGreen"
-        android:fontFamily="@font/bevan"
-        android:text="World Fragment"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="26sp" />
+    tools:context="fau.amoracen.covid_19update.ui.homeActivity.world.WorldFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/textview_border_shadow"
-        android:elevation="10dp"
-        android:paddingBottom="5dp">
+        android:orientation="vertical">
+
+
         <TextView
-            android:id="@+id/updatedTextView"
+            android:id="@+id/headingTextView"
+            style="@style/WorldWideStats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textview_border_background_green"
-            android:fontFamily="@font/bevan"
-            android:text="Updated"
-            android:textAlignment="center"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
+            android:layout_marginTop="2dp"
+            android:text="@string/worldwide_stats"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/updatedTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/data_updated" />
+
+        <TextView
+            android:id="@+id/recoveredTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recovered"
+            android:textColor="@android:color/holo_green_light" />
+
+
+        <TextView
+            android:id="@+id/casesTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_confirmed_cases"
+            android:textColor="@android:color/holo_orange_light" />
+
+
+        <TextView
+            android:id="@+id/todayCasesTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_cases"
+            android:textColor="@android:color/holo_orange_light" />
+
+
+        <TextView
+            android:id="@+id/activeTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/active_cases"
+            android:textColor="@android:color/holo_orange_light" />
+
+        <TextView
+            android:id="@+id/criticalTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/critical_cases"
+            android:textColor="@android:color/holo_orange_dark" />
+
+        <TextView
+            android:id="@+id/casesPerOneMillionTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cases_per_one_million"
+            android:textColor="@android:color/holo_orange_dark" />
+
+        <TextView
+            android:id="@+id/deathsTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deaths"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/newDeathsTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_deaths"
+            android:textColor="@android:color/holo_red_light" />
+
+
+        <TextView
+            android:id="@+id/deathsPerOneMillionTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deaths_per_one_million"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/affectedCountriesTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/affected_countries"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/testTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_test"
+            android:textColor="@android:color/holo_blue_bright" />
+
+        <TextView
+            android:id="@+id/testsPerOneMillionTextView"
+            style="@style/WorldWideStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/test_per_one_million"
+            android:textColor="@android:color/holo_blue_bright" />
+
+
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/totalCasesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/textview_border_background_green"
-        android:elevation="10dp"
-        android:fontFamily="@font/bevan"
-        android:padding="5dp"
-        android:text="Total Cases"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="22sp" />
-
-
-</LinearLayout>
+</ScrollView>
