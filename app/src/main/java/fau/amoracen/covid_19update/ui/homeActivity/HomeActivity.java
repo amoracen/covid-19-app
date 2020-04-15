@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import fau.amoracen.covid_19update.service.FirebaseUtil;
 import fau.amoracen.covid_19update.ui.homeActivity.countries.CountriesFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.news.NewsFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.us_states.USstatesFragment;
@@ -84,6 +85,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 // Method that allows you to logout via  logout button
                 //mFireBaseAuth.getInstance().signOut();
+                FirebaseUtil.getInstance().signOut();
                 Intent inToMain = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(inToMain);
                 finish();
