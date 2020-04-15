@@ -30,7 +30,6 @@ import fau.amoracen.covid_19update.R;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +38,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        // get username email textView
+        // get email textView
         TextView userEmail = headerView.findViewById(R.id.userEmailTextView);
-        // set username
-        //userEmail.setText(mFireBaseAuth.getCurrentUser().getEmail());
-        userEmail.setText("email@gmail.com");
+        // set email
+        userEmail.setText(FirebaseUtil.getInstance().getCurrentUser().getEmail());
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -59,7 +57,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     new WorldFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_worldwidePage);
         }
-
     }
 
     @Override
@@ -83,8 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                // Method that allows you to logout via  logout button
-                //mFireBaseAuth.getInstance().signOut();
+                // Method that allows logout
                 FirebaseUtil.getInstance().signOut();
                 Intent inToMain = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(inToMain);
