@@ -97,31 +97,31 @@ public class WorldFragment extends Fragment {
         long seconds = Long.parseLong(response.getUpdated());
         Date date = new Date(seconds);
         String updatedDate = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
-        dataUpdatedTextView.append("\n" + updatedDate);
+        dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         //Cases
-        totalCasesTextView.append("\n" + response.getCases());
+        totalCasesTextView.setText(getString(R.string.total_confirmed_cases, response.getCases()));
         //New Cases
-        todayCasesTextView.append("\n" + response.getTodayCases());
+        todayCasesTextView.setText(getString(R.string.new_cases, response.getTodayCases()));
         //Deaths
-        deathsTextView.append("\n" + response.getDeaths());
+        deathsTextView.setText(getString(R.string.deaths, response.getDeaths()));
         //New Deaths
-        todayDeathsTextView.append("\n" + response.getTodayDeaths());
+        todayDeathsTextView.setText(getString(R.string.new_deaths, response.getTodayDeaths()));
         //Recovered
-        recoveredTextView.append("\n" + response.getRecovered());
+        recoveredTextView.setText(getString(R.string.recovered, response.getRecovered()));
         //Active Cases
-        activeTextView.append("\n" + response.getActive());
+        activeTextView.setText(getString(R.string.active_cases, response.getActive()));
         //Critical
-        criticalTextView.append("\n" + response.getCritical());
+        criticalTextView.setText(getString(R.string.critical_cases, response.getCritical()));
         //Cases Per one
-        casePerOneMillionTextView.append("\n" + response.getCasesPerOneMillion());
+        casePerOneMillionTextView.setText(getString(R.string.cases_per_one_million, response.getCasesPerOneMillion()));
         //Deaths Per One
-        deathsPerOneMillionTextView.append("\n" + response.getDeathsPerOneMillion());
+        deathsPerOneMillionTextView.setText(getString(R.string.deaths_per_one_million, response.getDeathsPerOneMillion()));
         //Tests
-        testsTextView.append("\n" + response.getTests());
+        testsTextView.setText(getString(R.string.total_test, response.getTests()));
         //Test Per One
-        testPerOneMillionTextView.append("\n" + response.getTestsPerOneMillion());
+        testPerOneMillionTextView.setText(getString(R.string.test_per_one_million, response.getTestsPerOneMillion()));
         //Affected Countries
-        affectedCountriesTextView.append("\n" + response.getAffectedCountries());
+        affectedCountriesTextView.setText(getString(R.string.affected_countries, response.getAffectedCountries()));
     }
 
     /**
