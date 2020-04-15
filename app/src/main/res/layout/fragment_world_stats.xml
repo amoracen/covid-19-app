@@ -4,7 +4,7 @@
     android:id="@+id/worldFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/colorLightBackground"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context="fau.amoracen.covid_19update.ui.homeActivity.world.WorldFragment">
