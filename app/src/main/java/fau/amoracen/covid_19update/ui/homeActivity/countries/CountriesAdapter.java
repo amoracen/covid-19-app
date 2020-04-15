@@ -124,46 +124,30 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             CountryData country = countries.get(position);
             Toast.makeText(itemView.getContext(), "TODO", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(view.getContext(), CountryActivity.class);
-             intent.putExtra("Country", country);
-             view.getContext().startActivity(intent);
+            intent.putExtra("Country", country);
+            view.getContext().startActivity(intent);
         }
 
         void bind(CountryData country) {
             CountryTextView.setText(country.getCountry());
             showImage(country.getCountryInfo().getFlag());
-            NewConfirmedTextView.setText(formatNumber(country.getTodayCases()));
-            TotalConfirmedTextView.setText(formatNumber(country.getCases()));
-            TotalRecoveredTextView.setText(formatNumber(country.getRecovered()));
-            ActiveTextView.setText(formatNumber(country.getActive()));
-            TotalDeathsTextView.setText(formatNumber(country.getDeaths()));
-            NewDeathsTextView.setText(formatNumber(country.getTodayDeaths()));
-            CriticalTextView.setText(formatNumber(country.getCritical()));
-            casesPerOneMillionTextView.setText(formatNumberTwoDecimalPlaces(country.getCasesPerOneMillion()));
-            deathsPerOneMillionTextView.setText(formatNumberTwoDecimalPlaces(country.getDeathsPerOneMillion()));
-            testTextView.setText(formatNumber(country.getTests()));
-            testsPerOneMillionTextView.setText(formatNumberTwoDecimalPlaces(country.getTestsPerOneMillion()));
+            NewConfirmedTextView.setText(country.getTodayCases());
+            TotalConfirmedTextView.setText(country.getCases());
+            TotalRecoveredTextView.setText(country.getRecovered());
+            ActiveTextView.setText(country.getActive());
+            TotalDeathsTextView.setText(country.getDeaths());
+            NewDeathsTextView.setText(country.getTodayDeaths());
+            CriticalTextView.setText(country.getCritical());
+            casesPerOneMillionTextView.setText(country.getCasesPerOneMillion());
+            deathsPerOneMillionTextView.setText(country.getDeathsPerOneMillion());
+            testTextView.setText(country.getTests());
+            testsPerOneMillionTextView.setText(country.getTestsPerOneMillion());
         }
 
         private void showImage(String flag) {
             if (flag != null && !flag.isEmpty()) {
                 Picasso.get().load(flag).resize(30, 30).centerInside().into(imageView);
             }
-        }
-
-        public String formatNumber(String number) {
-            if (number == null) {
-                return "0";
-            }
-            double num = Double.parseDouble(number);
-            return String.format(Locale.getDefault(), "%,.0f", num);
-        }
-
-        public String formatNumberTwoDecimalPlaces(String number) {
-            if (number == null) {
-                return "0";
-            }
-            double num = Double.parseDouble(number);
-            return String.format(Locale.getDefault(), "%,.2f", num);
         }
     }
 }
