@@ -6,30 +6,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_worldwidePage"
-            android:icon="@drawable/ic_world"
+            android:icon="@drawable/ic_earth"
             android:title="@string/worldwide_stats" />
         <item
             android:id="@+id/nav_CountriesPage"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_earth_virus"
             android:title="@string/countries_stats" />
         <item
             android:id="@+id/nav_USStatesPage"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_usa"
             android:title="@string/us_states_stats" />
         <item
             android:id="@+id/nav_newsPage"
-            android:icon="@drawable/ic_chat_black_24dp"
+            android:icon="@drawable/ic_newspaper"
             android:title="@string/news" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_logout_black_24dp"
+            android:icon="@drawable/ic_logout"
             android:title="@string/logout" />
     </group>
-
     <item android:title="">
-        <menu>
-
-        </menu>
+        <menu />
     </item>
 
 </menu>
