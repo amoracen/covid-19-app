@@ -20,13 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.CountryData;
 import fau.amoracen.covid_19update.data.USStatesData;
-import fau.amoracen.covid_19update.service.APIRequestCountries;
+import fau.amoracen.covid_19update.service.APIRequestList;
 import fau.amoracen.covid_19update.service.APIRequestUSStates;
 import fau.amoracen.covid_19update.service.MySingleton;
 
@@ -85,7 +87,9 @@ public class USstatesFragment extends Fragment {
      * @param url a string
      */
     private void makeRequest(String url) {
-        APIRequestUSStates request = new APIRequestUSStates<>(url, USStatesData.class, new Response.Listener<List<USStatesData>>() {
+        Type collectionType = new TypeToken<List<USStatesData>>() {
+        }.getType();
+        APIRequestList request = new APIRequestList<>(url,collectionType, new Response.Listener<List<USStatesData>>() {
             @Override
             public void onResponse(List<USStatesData> response) {
                 updateUI(response);
