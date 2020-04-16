@@ -9,7 +9,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,15 +17,22 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.CountryData;
 
+/**
+ * CountriesAdapter manages the list of countries
+ */
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.CountriesAdapterViewHolder> implements Filterable {
     private List<CountryData> countries;
     private ArrayList<CountryData> countriesFull;
 
+    /**
+     * Constructor
+     *
+     * @param countries a list of countries
+     */
     CountriesAdapter(List<CountryData> countries) {
         this.countries = countries;
         this.countriesFull = new ArrayList<>(countries);
@@ -56,6 +62,9 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
         return exampleFilter;
     }
 
+    /**
+     * Filter the country name for the search button
+     */
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
@@ -84,22 +93,20 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
         }
     };
 
+    /**
+     * Manages the table row, used to set the values from the Country class
+     */
     public class CountriesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView CountryTextView;
-        TextView TotalConfirmedTextView;
-        TextView NewConfirmedTextView;
-        TextView TotalRecoveredTextView;
-        TextView ActiveTextView;
-        TextView TotalDeathsTextView;
-        TextView NewDeathsTextView;
-        TextView CriticalTextView;
-        TextView casesPerOneMillionTextView;
-        TextView deathsPerOneMillionTextView;
-        TextView testTextView;
-        TextView testsPerOneMillionTextView;
-        ImageView imageView;
+        private TextView CountryTextView, TotalConfirmedTextView, NewConfirmedTextView, TotalRecoveredTextView;
+        private TextView ActiveTextView, TotalDeathsTextView, NewDeathsTextView, CriticalTextView;
+        private TextView casesPerOneMillionTextView, deathsPerOneMillionTextView, testTextView, testsPerOneMillionTextView;
+        private ImageView imageView;
 
-
+        /**
+         * Constructor
+         *
+         * @param itemView a row in the table
+         */
         CountriesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -118,19 +125,35 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * Listener, Starts Intent
+         *
+         * @param view a row in the table
+         */
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
             CountryData country = countries.get(position);
-            Toast.makeText(itemView.getContext(), "TODO", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(view.getContext(), CountryActivity.class);
             intent.putExtra("Country", country);
             view.getContext().startActivity(intent);
         }
 
+        /**
+         * Add Data to the row
+         *
+         * @param country a CountryData object
+         */
         void bind(CountryData country) {
-            CountryTextView.setText(country.getCountry());
             showImage(country.getCountryInfo().getFlag());
+            String countryName = country.getCountry();
+            if (countryName.length() > 10) {
+                countryName = country.getCountryInfo().getIso3();
+                if (countryName.isEmpty()) {
+                    countryName = country.getCountry().substring(0, 9);
+                }
+            }
+            CountryTextView.setText(countryName);
             NewConfirmedTextView.setText(country.getTodayCases());
             TotalConfirmedTextView.setText(country.getCases());
             TotalRecoveredTextView.setText(country.getRecovered());
@@ -144,9 +167,14 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             testsPerOneMillionTextView.setText(country.getTestsPerOneMillion());
         }
 
+        /**
+         * Show Image using Picasso library
+         *
+         * @param flag URL of the flag
+         */
         private void showImage(String flag) {
             if (flag != null && !flag.isEmpty()) {
-                Picasso.get().load(flag).resize(30, 30).centerInside().into(imageView);
+                Picasso.get().load(flag).resize(60, 60).centerInside().into(imageView);
             }
         }
     }
