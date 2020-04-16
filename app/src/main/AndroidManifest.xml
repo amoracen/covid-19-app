@@ -11,8 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.homeActivity.countries.CountryActivity" />
-        <activity android:name=".ui.homeActivity.us_states.USStatesActivity" />
+        <activity
+            android:name=".ui.homeActivity.countries.CountryActivity"
+            android:parentActivityName=".ui.homeActivity.HomeActivity"
+            android:theme="@style/AppThemeActionBar" />
+        <activity
+            android:name=".ui.homeActivity.us_states.USStatesActivity"
+            android:parentActivityName=".ui.homeActivity.HomeActivity"
+            android:theme="@style/AppThemeActionBar" />
         <activity android:name=".ui.homeActivity.HomeActivity">
 
         </activity>
