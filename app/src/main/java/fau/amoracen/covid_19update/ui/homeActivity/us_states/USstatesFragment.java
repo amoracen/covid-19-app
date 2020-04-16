@@ -26,10 +26,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import fau.amoracen.covid_19update.R;
-import fau.amoracen.covid_19update.data.CountryData;
 import fau.amoracen.covid_19update.data.USStatesData;
 import fau.amoracen.covid_19update.service.APIRequestList;
-import fau.amoracen.covid_19update.service.APIRequestUSStates;
 import fau.amoracen.covid_19update.service.MySingleton;
 
 public class USstatesFragment extends Fragment {
