@@ -6,5 +6,5 @@
     <color name="colorDarkGreen">#093637</color>
     <color name="colorDarkGreen1">#064849</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="colorWhite1">#70B7D8D2</color>
+    <color name="colorLightBackground">#70B7D8D2</color>
 </resources>
