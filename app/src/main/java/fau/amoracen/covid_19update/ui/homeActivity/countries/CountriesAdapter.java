@@ -149,7 +149,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             String countryName = country.getCountry();
             if (countryName.length() > 10) {
                 countryName = country.getCountryInfo().getIso3();
-                if (countryName.isEmpty()) {
+                if (countryName == null || countryName.isEmpty()) {
                     countryName = country.getCountry().substring(0, 9);
                 }
             }
