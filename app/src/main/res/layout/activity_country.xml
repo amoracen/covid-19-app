@@ -1,89 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLightBackground"
     android:orientation="vertical"
-    android:padding="15dp"
-    tools:context=".ui.homeActivity.api1.CountryActivity">
+    android:padding="20dp"
+    tools:context=".ui.homeActivity.countries.CountryActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:adjustViewBounds="true"
-        android:background="@drawable/table_border"
-        android:contentDescription="@string/country_s_flag"
-        android:minWidth="100dp"
-        android:minHeight="100dp"
-        android:padding="5dp"
-        android:scaleType="fitCenter" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/CountryTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/table_border"
-        android:fontFamily="sans-serif-medium"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp"
-        android:text="Country"
-        android:textColor="@color/colorDarkGreen"
-        android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/CasesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/table_border"
-        android:fontFamily="sans-serif-medium"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp"
-        android:text="Total Confirmed"
-        android:textColor="@color/colorDarkGreen"
-        android:textSize="15sp" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/country_s_flag"
+                android:minWidth="200dp"
+                android:minHeight="150dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter" />
 
-    <TextView
-        android:id="@+id/TotalRecoveredTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/table_border"
-        android:fontFamily="sans-serif-medium"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp"
-        android:text="Total Recovered"
-        android:textColor="@color/colorDarkGreen"
-        android:textSize="15sp" />
+            <TextView
+                android:id="@+id/CountryTextView"
+                style="@style/CountryStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:text="@string/country" />
 
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/deathsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/table_border"
-        android:fontFamily="sans-serif-medium"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp"
-        android:text="Total Deaths"
-        android:textColor="@color/colorDarkGreen"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/updatedTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/data_updated" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/TotalRecoveredTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recovered"
+            android:textColor="@android:color/holo_green_light" />
+
+        <TextView
+            android:id="@+id/CasesTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_confirmed_cases"
+            android:textColor="@android:color/holo_orange_light" />
+
+        <TextView
+            android:id="@+id/todayCasesTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_cases"
+            android:textColor="@android:color/holo_orange_light" />
+
+        <TextView
+            android:id="@+id/activeTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/active_cases"
+            android:textColor="@android:color/holo_orange_light" />
+
+        <TextView
+            android:id="@+id/criticalTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/critical_cases"
+            android:textColor="@android:color/holo_orange_dark" />
+
+        <TextView
+            android:id="@+id/casesPerOneMillionTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cases_per_one_million"
+            android:textColor="@android:color/holo_orange_dark" />
+
+        <TextView
+            android:id="@+id/deathsTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deaths"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/todayDeathsTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_deaths"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/deathsPerOneMillionTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deaths_per_one_million"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/testTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_test"
+            android:textColor="@android:color/holo_blue_bright" />
+
+        <TextView
+            android:id="@+id/testsPerOneMillionTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/test_per_one_million"
+            android:textColor="@android:color/holo_blue_bright" />
+    </LinearLayout>
+</ScrollView>
