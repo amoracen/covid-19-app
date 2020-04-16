@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">COVID-19 UPDATE</string>
+    <string name="app_name">COVID-19 Stats</string>
     <string name="welcome">Welcome!</string>
     <string name="welcome_back">Welcome Back!</string>
     <string name="find_information">Find information about COVID-19</string>
@@ -11,7 +11,7 @@
     <string name="show_password">Show Password</string>
     <string name="create_a_new_account">Create an Account</string>
     <string name="already_a_member">Already a Member?</string>
-    <string name="user_email">user email</string>
+    <string name="user_email">User Email</string>
     <string name="logout">Logout</string>
     <string name="home_page">Home Page</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -32,17 +32,33 @@
     <string name="password_characters">Password must be at least 6 characters long</string>
     <string name="worldwide_stats">Worldwide Stats</string>
     <string name="refresh">Refresh</string>
-    <string name="data_updated">Data Updated</string>
-    <string name="affected_countries">Affected Countries</string>
-    <string name="test_per_one_million">Test Per One Million</string>
-    <string name="total_test">Total Test</string>
-    <string name="deaths_per_one_million">Deaths Per One Million</string>
-    <string name="cases_per_one_million">Cases Per One Million</string>
-    <string name="new_deaths">New Deaths</string>
-    <string name="deaths">Deaths</string>
-    <string name="critical_cases">Critical Cases</string>
-    <string name="active_cases">Active Cases</string>
-    <string name="recovered">Recovered</string>
-    <string name="new_cases">New Cases</string>
-    <string name="total_confirmed_cases">Total Confirmed Cases</string>
+    <string name="data_updated">Data Last Updated \n %1$s</string>
+    <string name="affected_countries">Affected Countries \n %1$s</string>
+    <string name="test_per_one_million">Test Per One Million \n %1$s</string>
+    <string name="total_test">Total Test \n %1$s</string>
+    <string name="deaths_per_one_million">Deaths Per One Million \n %1$s</string>
+    <string name="cases_per_one_million">Cases Per One Million \n %1$s</string>
+    <string name="new_deaths">New Deaths \n %1$s</string>
+    <string name="deaths">Deaths \n %1$s</string>
+    <string name="critical_cases">Critical Cases \n %1$s</string>
+    <string name="active_cases">Active Cases \n %1$s</string>
+    <string name="recovered">Recovered \n %1$s</string>
+    <string name="new_cases">New Cases \n %1$s</string>
+    <string name="total_confirmed_cases">Total Confirmed Cases \n %1$s</string>
+    <string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>
+    <string name="flag">Flag</string>
+    <string name="country">Country </string>
+    <string name="total_cases">Total Cases</string>
+    <string name="total_recovered">Total Recovered</string>
+    <string name="new_cases_table">New Cases</string>
+    <string name="active_cases_table">Active Cases</string>
+    <string name="total_deaths_table">Total Deaths</string>
+    <string name="new_deaths_table">New Deaths</string>
+    <string name="critical_cases_table">Critical Cases</string>
+    <string name="cases_p_1m_ppl">Cases P 1M ppl</string>
+    <string name="deaths_p_1m_ppl">Deaths P 1M ppl</string>
+    <string name="tested">Tested</string>
+    <string name="tested_p_1m_ppl">Tested P 1M ppl</string>
+    <string name="_0">0</string>
+    <!--getString(R.string.welcome_message, "Test", 0);-->
 </resources>
