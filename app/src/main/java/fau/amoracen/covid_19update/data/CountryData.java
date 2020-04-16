@@ -10,6 +10,10 @@ public class CountryData implements Serializable {
      * Request URL
      */
     public final static String URL = "https://corona.lmao.ninja/v2/countries?yesterday=false&sort=cases";
+    /**
+     * Request One Country
+     */
+    public final static String URLCountry = "https://corona.lmao.ninja/v2/countries/";
     /*Data returned by the API*/
     private String country, updated, cases, todayCases, deaths;
     private String todayDeaths, recovered, active, critical;
