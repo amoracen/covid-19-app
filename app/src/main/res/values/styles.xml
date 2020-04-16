@@ -7,6 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <!-- Action Bar application theme. -->
+    <style name="AppThemeActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorDarkGreen</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
     <!--Welcome Screen Buttons-->
     <style name="WelcomeScreenButtonStyle">
@@ -46,5 +53,52 @@
         <item name="android:textSize">22sp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <!--Style For Country Stats-->
+    <style name="CountryStats">
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/textview_border_background_green</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!--Tables Style-->
+    <style name="TableStyleCommon">
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/table_border</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorDarkGreen</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:minHeight">65dp</item>
+        <item name="android:maxHeight">65dp</item>
+    </style>
+    <!--Tables Style Flags-->
+    <style name="TableStyleFlag" parent="TableStyleCommon">
+        <item name="android:minWidth">75dp</item>
+        <item name="android:maxWidth">75dp</item>
+    </style>
+    <!--Tables Style Country-->
+    <style name="TableStyleCountry" parent="TableStyleCommon">
+        <item name="android:minWidth">115dp</item>
+        <item name="android:maxWidth">115dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    <!--Tables Style-->
+    <style name="TableStyle" parent="TableStyleCommon">
+        <item name="android:minWidth">100dp</item>
+        <item name="android:maxWidth">100dp</item>
+    </style>
+
+    <style name="TableStyleLong" parent="TableStyleCommon">
+        <item name="android:minWidth">125dp</item>
+        <item name="android:maxWidth">125dp</item>
     </style>
 </resources>
