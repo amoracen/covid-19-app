@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@color/colorDarkGreen"
-        android:fontFamily="@font/bevan"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/data_updated"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
