@@ -96,7 +96,7 @@ public class WorldFragment extends Fragment {
         //Get date
         long seconds = Long.parseLong(response.getUpdated());
         Date date = new Date(seconds);
-        String updatedDate = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
+        String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
         dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         //Cases
         totalCasesTextView.setText(getString(R.string.total_confirmed_cases, response.getCases()));

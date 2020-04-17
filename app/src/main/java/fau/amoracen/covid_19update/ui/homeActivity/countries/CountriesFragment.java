@@ -71,7 +71,7 @@ public class CountriesFragment extends Fragment {
         //Get date
         long seconds = Long.parseLong(dateSTR);
         Date date = new Date(seconds);
-        String updatedDate = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
+        String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
         dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         dataUpdatedTextView.setVisibility(View.VISIBLE);
     }
