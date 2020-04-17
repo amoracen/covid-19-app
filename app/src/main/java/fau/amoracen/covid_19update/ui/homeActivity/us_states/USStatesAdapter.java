@@ -8,22 +8,28 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.USStatesData;
 
+/**
+ * USStatesAdapter manages the list of states
+ */
 public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStatesAdapterViewHolder> implements Filterable {
     private List<USStatesData> usStates;
     private ArrayList<USStatesData> usStatesFull;
 
+    /**
+     * Constructor
+     *
+     * @param usStates a list of states
+     */
     USStatesAdapter(List<USStatesData> usStates) {
         this.usStates = usStates;
         this.usStatesFull = new ArrayList<>(usStates);
@@ -53,6 +59,9 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
         return exampleFilter;
     }
 
+    /**
+     * Filter the state name for the search button
+     */
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
@@ -81,65 +90,59 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
         }
     };
 
+    /**
+     * Manages the table row, used to set the values from the USStatesData class
+     */
     public class USStatesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView stateTextView;
-        TextView casesTextView;
-        TextView todayCasesTextView;
-        TextView deathsTextView;
-        TextView todaydeathsTextView;
-        TextView activeTextView;
-        TextView testsTextView;
-        TextView testsPerOneMillionTextView;
+        private TextView stateTextView, casesTextView, todayCasesTextView, deathsTextView;
+        private TextView todayDeathsTextView, activeTextView, testsTextView, testsPerOneMillionTextView;
 
-
+        /**
+         * Constructor
+         *
+         * @param itemView a row in the table
+         */
         USStatesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             stateTextView = itemView.findViewById(R.id.stateTextView);
             casesTextView = itemView.findViewById(R.id.casesTextView);
             todayCasesTextView = itemView.findViewById(R.id.todayCasesTextView);
             deathsTextView = itemView.findViewById(R.id.deathsTextView);
-            todaydeathsTextView = itemView.findViewById(R.id.todayDeathsTextView);
+            todayDeathsTextView = itemView.findViewById(R.id.todayDeathsTextView);
             activeTextView = itemView.findViewById(R.id.activeTextView);
             testsTextView = itemView.findViewById(R.id.testTextView);
             testsPerOneMillionTextView = itemView.findViewById(R.id.testsPerOneMillionTextView);
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * Listener, Starts Intent
+         *
+         * @param view a row in the table
+         */
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
             USStatesData usState = usStates.get(position);
-            Toast.makeText(itemView.getContext(), "TODO", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(view.getContext(), USStatesActivity.class);
             intent.putExtra("USState", usState);
             view.getContext().startActivity(intent);
         }
 
+        /**
+         * Add Data to the row
+         *
+         * @param usStatesData a USStatesData object
+         */
         void bind(USStatesData usStatesData) {
             stateTextView.setText(usStatesData.getState());
-            casesTextView.setText(formatNumber(usStatesData.getCases()));
-            todayCasesTextView.setText(formatNumber(usStatesData.getTodayCases()));
-            deathsTextView.setText(formatNumber(usStatesData.getDeaths()));
-            todaydeathsTextView.setText(formatNumber(usStatesData.getTodayDeaths()));
-            activeTextView.setText(formatNumber(usStatesData.getActive()));
-            testsTextView.setText(formatNumber(usStatesData.getTests()));
-            testsPerOneMillionTextView.setText(formatNumberTwoDecimalPlaces(usStatesData.getTestsPerOneMillion()));
-        }
-
-        public String formatNumber(String number) {
-            if (number == null) {
-                return "0";
-            }
-            double num = Double.parseDouble(number);
-            return String.format(Locale.getDefault(), "%,.0f", num);
-        }
-
-        public String formatNumberTwoDecimalPlaces(String number) {
-            if (number == null) {
-                return "0";
-            }
-            double num = Double.parseDouble(number);
-            return String.format(Locale.getDefault(), "%,.2f", num);
+            casesTextView.setText(usStatesData.getCases());
+            todayCasesTextView.setText(usStatesData.getTodayCases());
+            deathsTextView.setText(usStatesData.getDeaths());
+            todayDeathsTextView.setText(usStatesData.getTodayDeaths());
+            activeTextView.setText(usStatesData.getActive());
+            testsTextView.setText(usStatesData.getTests());
+            testsPerOneMillionTextView.setText(usStatesData.getTestsPerOneMillion());
         }
     }
 }
