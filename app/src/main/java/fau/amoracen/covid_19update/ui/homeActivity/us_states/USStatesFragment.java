@@ -23,15 +23,23 @@ import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.USStatesData;
 import fau.amoracen.covid_19update.service.APIRequestList;
 import fau.amoracen.covid_19update.service.MySingleton;
 
-public class USstatesFragment extends Fragment {
-    private TextView resultTextView;
+/**
+ * Manages request to the API to get US States Stats
+ * Updates UI
+ */
+public class USStatesFragment extends Fragment {
+    private TextView dataUpdatedTextView;
     private RecyclerView UsStatesRecyclerView;
     private HorizontalScrollView horizontalScrollView;
     private USStatesAdapter adapter;
@@ -48,14 +56,31 @@ public class USstatesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        resultTextView = view.findViewById(R.id.usTextView);
-        String urlUS = "https://corona.lmao.ninja/states";
-        makeRequest(urlUS);
+        dataUpdatedTextView = view.findViewById(R.id.updatedTextView);
+        dataUpdatedTextView.setVisibility(View.INVISIBLE);
         UsStatesRecyclerView = view.findViewById(R.id.usStatesRecyclerView);
         horizontalScrollView = view.findViewById(R.id.horizontalScrollView);
+        makeRequest();
+    }
+
+    /**
+     * Set the date and time the data was updated
+     */
+    private void setDataUpdatedTextView() {
+        //Get date
+        Calendar calendar = Calendar.getInstance();
+        String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(calendar.getTime());
+        dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
+        dataUpdatedTextView.setVisibility(View.VISIBLE);
     }
 
 
+    /**
+     * Add a listener to the menu to refresh the data, and search the table
+     *
+     * @param menu     a menu object
+     * @param inflater inflate with the new menu
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
@@ -63,7 +88,6 @@ public class USstatesFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -76,34 +100,47 @@ public class USstatesFragment extends Fragment {
                 return false;
             }
         });
+        MenuItem refreshItem = menu.findItem(R.id.action_refresh);
+        refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                makeRequest();
+                return true;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
      * Start the Request to the API
-     *
-     * @param url a string
      */
-    private void makeRequest(String url) {
+    private void makeRequest() {
         Type collectionType = new TypeToken<List<USStatesData>>() {
         }.getType();
-        APIRequestList request = new APIRequestList<>(url,collectionType, new Response.Listener<List<USStatesData>>() {
+        APIRequestList request = new APIRequestList<>(USStatesData.URL, collectionType, new Response.Listener<List<USStatesData>>() {
             @Override
             public void onResponse(List<USStatesData> response) {
+                setDataUpdatedTextView();
                 updateUI(response);
-                //resultTextView.setText(size);
+                /*TODO SAVE SQLite*/
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                resultTextView.setText("Search Failed");
+                /*TODO Handle Error*/
+                dataUpdatedTextView.setText("Search Failed");
             }
         });
         // Add a request to your RequestQueue.
         MySingleton.getInstance(getContext()).addToRequestQueue(request);
     }
 
+    /**
+     * Update UI
+     *
+     * @param usStates a list of states returned by the API
+     */
     private void updateUI(List<USStatesData> usStates) {
         adapter = new USStatesAdapter(usStates);
         UsStatesRecyclerView.setAdapter(adapter);
