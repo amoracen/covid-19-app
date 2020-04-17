@@ -60,5 +60,11 @@
     <string name="tested">Tested</string>
     <string name="tested_p_1m_ppl">Tested P 1M ppl</string>
     <string name="_0">0</string>
+    <string name="state">State</string>
+    <string name="news_api_key">8fc09aabd2624f209a72071a6d4b3ae1</string>
+    <string name="author">Author: %1$s</string>
+    <string name="published_1_s">Published : %1$s</string>
+    <string name="description">Description</string>
+    <string name="content">Content</string>
     <!--getString(R.string.welcome_message, "Test", 0);-->
 </resources>
