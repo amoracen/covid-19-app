@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,77 +8,81 @@
     android:padding="20dp"
     tools:context=".ui.homeActivity.us_states.USStatesActivity">
 
-
-    <TextView
-        android:id="@+id/stateTextView"
-        style="@style/CountryStats"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
-        android:text="@string/state" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/updatedTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/data_updated" />
+        <TextView
+            android:id="@+id/stateTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:text="@string/state" />
 
-    <TextView
-        android:id="@+id/CasesTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/total_confirmed_cases"
-        android:textColor="@android:color/holo_orange_light" />
+        <TextView
+            android:id="@+id/updatedTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/data_updated" />
 
-    <TextView
-        android:id="@+id/todayCasesTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/new_cases"
-        android:textColor="@android:color/holo_orange_light" />
+        <TextView
+            android:id="@+id/CasesTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_confirmed_cases"
+            android:textColor="@android:color/holo_orange_light" />
 
-    <TextView
-        android:id="@+id/activeTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/active_cases"
-        android:textColor="@android:color/holo_orange_light" />
+        <TextView
+            android:id="@+id/todayCasesTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_cases"
+            android:textColor="@android:color/holo_orange_light" />
 
-    <TextView
-        android:id="@+id/deathsTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/deaths"
-        android:textColor="@android:color/holo_red_light" />
+        <TextView
+            android:id="@+id/activeTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/active_cases"
+            android:textColor="@android:color/holo_orange_light" />
 
-    <TextView
-        android:id="@+id/todayDeathsTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/new_deaths"
-        android:textColor="@android:color/holo_red_light" />
+        <TextView
+            android:id="@+id/deathsTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deaths"
+            android:textColor="@android:color/holo_red_light" />
 
-    <TextView
-        android:id="@+id/testTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/total_test"
-        android:textColor="@android:color/holo_blue_bright" />
+        <TextView
+            android:id="@+id/todayDeathsTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_deaths"
+            android:textColor="@android:color/holo_red_light" />
 
-    <TextView
-        android:id="@+id/testsPerOneMillionTextView"
-        style="@style/CountryStats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/test_per_one_million"
-        android:textColor="@android:color/holo_blue_bright" />
+        <TextView
+            android:id="@+id/testTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_test"
+            android:textColor="@android:color/holo_blue_bright" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/testsPerOneMillionTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/test_per_one_million"
+            android:textColor="@android:color/holo_blue_bright" />
+    </LinearLayout>
+</ScrollView>
