@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.homeActivity.news.NewsActivity"
+            android:parentActivityName=".ui.homeActivity.HomeActivity"
+            android:theme="@style/AppThemeActionBar" />
+        <activity
             android:name=".ui.homeActivity.countries.CountryActivity"
             android:parentActivityName=".ui.homeActivity.HomeActivity"
             android:theme="@style/AppThemeActionBar" />
@@ -19,9 +23,7 @@
             android:name=".ui.homeActivity.us_states.USStatesActivity"
             android:parentActivityName=".ui.homeActivity.HomeActivity"
             android:theme="@style/AppThemeActionBar" />
-        <activity android:name=".ui.homeActivity.HomeActivity">
-
-        </activity>
+        <activity android:name=".ui.homeActivity.HomeActivity" />
         <activity android:name=".ui.mainActivity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
