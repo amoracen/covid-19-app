@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -19,7 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 import fau.amoracen.covid_19update.service.FirebaseUtil;
 import fau.amoracen.covid_19update.ui.homeActivity.countries.CountriesFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.news.NewsFragment;
-import fau.amoracen.covid_19update.ui.homeActivity.us_states.USstatesFragment;
+import fau.amoracen.covid_19update.ui.homeActivity.us_states.USStatesFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.world.WorldFragment;
 import fau.amoracen.covid_19update.ui.mainActivity.MainActivity;
 import fau.amoracen.covid_19update.R;
@@ -72,14 +71,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_USStatesPage:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new USstatesFragment()).commit();
+                        new USStatesFragment()).commit();
                 break;
             case R.id.nav_newsPage:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new NewsFragment()).commit();
                 break;
             case R.id.nav_logout:
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 // Method that allows logout
                 FirebaseUtil.getInstance().signOut();
                 Intent inToMain = new Intent(getApplicationContext(), MainActivity.class);
