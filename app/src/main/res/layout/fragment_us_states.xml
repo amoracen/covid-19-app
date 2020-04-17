@@ -7,7 +7,7 @@
     android:background="@color/colorLightBackground"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context="fau.amoracen.covid_19update.ui.homeActivity.us_states.USStatesActivity">
+    tools:context="fau.amoracen.covid_19update.ui.homeActivity.us_states.USStatesFragment">
 
     <TextView
         android:id="@+id/updatedTextView"
