@@ -2,9 +2,12 @@ package fau.amoracen.covid_19update.ui.homeActivity.us_states;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.USStatesData;
 import fau.amoracen.covid_19update.service.APIRequest;
 import fau.amoracen.covid_19update.service.MySingleton;
+import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
 /**
  * Updates UI with  State Data
@@ -30,6 +34,8 @@ public class USStatesActivity extends AppCompatActivity {
     private TextView stateTextView, casesTextView, todayCasesTextView, deathsTextView, dataUpdatedTextView;
     private TextView todayDeathsTextView, activeTextView, testsTextView, testsPerOneMillionTextView;
     private USStatesData state;
+    private PieChartFragment pieChartFragment;
+    private FrameLayout pieChartFragmentLayout;
 
     //Menu
     @Override
@@ -57,7 +63,8 @@ public class USStatesActivity extends AppCompatActivity {
         /*Get Data From Table*/
         Intent intent = getIntent();
         state = (USStatesData) intent.getExtras().getSerializable("USState");
-
+        pieChartFragmentLayout = findViewById(R.id.container_pie_chart);
+        pieChartFragment = new PieChartFragment();
         dataUpdatedTextView = findViewById(R.id.updatedTextView);
         stateTextView = findViewById(R.id.stateTextView);
         casesTextView = findViewById(R.id.CasesTextView);
@@ -71,6 +78,7 @@ public class USStatesActivity extends AppCompatActivity {
         if (state == null) {
             finish();
         } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_pie_chart, pieChartFragment).commit();
             updateUI(state);
         }
     }
@@ -102,7 +110,7 @@ public class USStatesActivity extends AppCompatActivity {
      *
      * @param usStatesData state returned by the API
      */
-    private void updateUI(USStatesData usStatesData) {
+    private void updateUI(final USStatesData usStatesData) {
         //Get date
         Calendar calendar = Calendar.getInstance();
         String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(calendar.getTime());
@@ -115,5 +123,14 @@ public class USStatesActivity extends AppCompatActivity {
         activeTextView.setText(getString(R.string.active_cases, usStatesData.getActive()));
         testsTextView.setText(getString(R.string.total_test, usStatesData.getTests()));
         testsPerOneMillionTextView.setText(getString(R.string.test_per_one_million, usStatesData.getTestsPerOneMillion()));
+        //Create Pie Chart
+        int TIME_OUT = 500;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pieChartFragment.createPieChart(getApplicationContext(), usStatesData.getActiveNoFormat(), usStatesData.getRecoveredNoFormat(), usStatesData.getDeathsNoFormat());
+                pieChartFragmentLayout.setVisibility(View.VISIBLE);
+            }
+        }, TIME_OUT);
     }
 }
