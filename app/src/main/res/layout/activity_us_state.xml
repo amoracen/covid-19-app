@@ -84,5 +84,13 @@
             android:layout_height="wrap_content"
             android:text="@string/test_per_one_million"
             android:textColor="@android:color/holo_blue_bright" />
+
+        <FrameLayout
+            android:id="@+id/container_pie_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
+            android:visibility="invisible" />
     </LinearLayout>
 </ScrollView>
