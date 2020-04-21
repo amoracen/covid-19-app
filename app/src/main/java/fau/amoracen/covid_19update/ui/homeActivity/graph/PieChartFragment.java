@@ -1,5 +1,6 @@
 package fau.amoracen.covid_19update.ui.homeActivity.graph;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +24,15 @@ import java.util.Locale;
 
 import fau.amoracen.covid_19update.R;
 
+/**
+ * Creates a Pie Chart using active cases, recovered cases, and deaths
+ */
 public class PieChartFragment extends Fragment {
 
     private PieChart pieChart;
+    private ArrayList<PieEntry> yValue;
+    private ArrayList<Integer> colors;
+    private ArrayList<LegendEntry> legendEntries;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -41,66 +48,86 @@ public class PieChartFragment extends Fragment {
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5, 10, 5, 5);
+        pieChart.setExtraOffsets(2, 2, 2, 35);
         pieChart.setDragDecelerationFrictionCoef(0.90f);
-        pieChart.setDrawHoleEnabled(true);
+        pieChart.setDrawHoleEnabled(false);
         pieChart.setHoleColor(getResources().getColor(R.color.colorLightBackground));
         pieChart.setTransparentCircleRadius(58f);
         pieChart.setEntryLabelColor(getResources().getColor(R.color.colorDarkGreen));
+        pieChart.setRotationEnabled(false);
+        pieChart.animateX(1000, Easing.EaseInOutBack);
+        //Pie Chart Values
+        yValue = new ArrayList<>();
+        colors = new ArrayList<>();
+        legendEntries = new ArrayList<>();
     }
 
-    public void createPieChart(String activeCases, String recovered, String deaths) {
-        ArrayList<PieEntry> yValue = new ArrayList<>();
-        ArrayList<Integer> colors = new ArrayList<>();
-        yValue.add(new PieEntry(Float.parseFloat(activeCases), formatNumber(activeCases)));
-        colors.add(getResources().getColor(R.color.holo_orange_light));
-        yValue.add(new PieEntry(Float.parseFloat(recovered), formatNumber(recovered)));
-        colors.add(getResources().getColor(R.color.holo_green_light));
-        yValue.add(new PieEntry(Float.parseFloat(deaths), formatNumber(deaths)));
-        colors.add(getResources().getColor(R.color.holo_red_light));
+    /**
+     * Set Pie Entries
+     *
+     * @param cases a string representing the type of case
+     * @param label a string used for the legend
+     * @param color an integer representing the color
+     */
+    private void setPieEntry(String cases, String label, int color) {
+        yValue.add(new PieEntry(Float.parseFloat(cases)));
+        colors.add(color);
+        LegendEntry legendEntry = new LegendEntry();
+        legendEntry.label = label + ": \n" + formatNumber(cases);
+        legendEntry.formColor = color;
+        legendEntry.formSize = 15f;
+        legendEntries.add(legendEntry);
+    }
 
+    /**
+     * Create a Pie Chart
+     *
+     * @param context     application context
+     * @param activeCases a string
+     * @param recovered   a string
+     * @param deaths      a string
+     */
+    public void createPieChart(Context context, String activeCases, String recovered, String deaths) {
+        pieChart.clear();
+        yValue.clear();
+        colors.clear();
+        legendEntries.clear();
 
+        Legend legend = pieChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextSize(15f);
+        legend.setWordWrapEnabled(true);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setDrawInside(true);
+        legend.setXEntrySpace(25f);
+        legend.setYEntrySpace(5f);
+        //Active Cases
+        setPieEntry(activeCases, "Active", context.getResources().getColor(R.color.holo_orange_light));
+        //Recovered Cases
+        setPieEntry(recovered, "Recovered", context.getResources().getColor(R.color.holo_green_light));
+        //Deaths
+        setPieEntry(deaths, "Deaths", context.getResources().getColor(R.color.holo_red_light));
+
+        legend.setCustom(legendEntries);
         /*Description description = new Description();
         description.setText("This is an example fo a description");
         description.setTextSize(15f);
         pieChart.setDescription(description);*/
-        pieChart.animateX(1000, Easing.EaseInOutBack);
-
         PieDataSet dataSet = new PieDataSet(yValue, "");
-        //dataSet.setHighlightEnabled(true);
-        //dataSet.setAutomaticallyDisableSliceSpacing(true);
         dataSet.setSliceSpace(4);
-        dataSet.setSelectionShift(7f);
+        dataSet.setHighlightEnabled(true);
+        dataSet.setSelectionShift(5f);
         dataSet.setColors(colors);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
 
         PieData data = new PieData(dataSet);
         data.setValueTextSize(16f);
         data.setValueTextColor(getResources().getColor(R.color.colorDarkGreen));
-
-        Legend legend = pieChart.getLegend();
-        legend.setEnabled(true);
-        legend.setTextSize(14f);
-        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
-        LegendEntry activeCasesLegend = new LegendEntry();
-        activeCasesLegend.label = "Active Cases";
-        activeCasesLegend.formColor = getResources().getColor(R.color.holo_orange_light);
-        activeCasesLegend.formSize = 14;
-        legendEntries.add(activeCasesLegend);
-        LegendEntry recoveredLegend = new LegendEntry();
-        recoveredLegend.label = "Recovered";
-        recoveredLegend.formColor = getResources().getColor(R.color.holo_green_light);
-        recoveredLegend.formSize = 14;
-        legendEntries.add(recoveredLegend);
-        LegendEntry deathsLegend = new LegendEntry();
-        deathsLegend.label = "Deaths";
-        deathsLegend.formColor = getResources().getColor(R.color.holo_red_light);
-        deathsLegend.formSize = 14;
-        legendEntries.add(deathsLegend);
-        legend.setCustom(legendEntries);
-
-
         data.setValueFormatter(new PercentFormatter(pieChart));
+
+
         pieChart.setData(data);
         pieChart.setVisibility(View.VISIBLE);
     }
