@@ -110,6 +110,15 @@ public class CountryData implements Serializable {
     }
 
     /**
+     * Get Total deaths
+     *
+     * @return a string
+     */
+    public String getDeathsNoFormat() {
+        return deaths;
+    }
+
+    /**
      * Set Total deaths
      */
     public void setDeaths(String deaths) {
@@ -142,6 +151,15 @@ public class CountryData implements Serializable {
     }
 
     /**
+     * Get Recovered cases
+     *
+     * @return a string
+     */
+    public String getRecoveredNoFormat() {
+        return recovered;
+    }
+
+    /**
      * Set Recovered cases
      */
     public void setRecovered(String recovered) {
@@ -155,6 +173,15 @@ public class CountryData implements Serializable {
      */
     public String getActive() {
         return formatNumber(active);
+    }
+
+    /**
+     * Get active cases
+     *
+     * @return a string
+     */
+    public String getActiveNoFormat() {
+        return active;
     }
 
     /**

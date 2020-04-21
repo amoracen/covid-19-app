@@ -90,6 +90,14 @@ public class GlobalStats implements Serializable {
     public String getRecovered() {
         return formatNumber(recovered);
     }
+    /**
+     * Get total number of recovered
+     *
+     * @return a string
+     */
+    public String getRecoveredNoFormat() {
+        return recovered;
+    }
 
     /**
      * Set total number of recovered
@@ -107,6 +115,14 @@ public class GlobalStats implements Serializable {
      */
     public String getActive() {
         return formatNumber(active);
+    }
+    /**
+     * Get active cases
+     *
+     * @return a string
+     */
+    public String getActiveNoFormat() {
+        return active;
     }
 
     /**
@@ -233,6 +249,14 @@ public class GlobalStats implements Serializable {
      */
     public String getDeaths() {
         return formatNumber(deaths);
+    }
+    /**
+     * Get number of deaths
+     *
+     * @return a string
+     */
+    public String getDeathsNoFormat() {
+        return deaths;
     }
 
     /**

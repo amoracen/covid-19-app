@@ -46,6 +46,15 @@ public class USStatesData implements Serializable {
     }
 
     /**
+     * Get Total number of Cases
+     *
+     * @return a string
+     */
+    public String getCasesNoFormat() {
+        return cases;
+    }
+
+    /**
      * Set Total number of Cases
      */
     public void setCases(String cases) {
@@ -78,6 +87,15 @@ public class USStatesData implements Serializable {
     }
 
     /**
+     * Get Total number of deaths
+     *
+     * @return a string
+     */
+    public String getDeathsNoFormat() {
+        return deaths;
+    }
+
+    /**
      * Set Total number of deaths
      */
     public void setDeaths(String deaths) {
@@ -107,6 +125,24 @@ public class USStatesData implements Serializable {
      */
     public String getActive() {
         return formatNumber(active);
+    }
+
+    /**
+     * Get active cases
+     *
+     * @return a string
+     */
+    public String getActiveNoFormat() {
+        return active;
+    }
+
+    /**
+     * Get active cases
+     *
+     * @return a string
+     */
+    public String getRecoveredNoFormat() {
+        return String.valueOf(Integer.parseInt(getCasesNoFormat()) - Integer.parseInt(getActiveNoFormat()) - Integer.parseInt(getDeathsNoFormat()));
     }
 
     /**
