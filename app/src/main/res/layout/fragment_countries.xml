@@ -9,6 +9,18 @@
     android:padding="10dp"
     tools:context="fau.amoracen.covid_19update.ui.homeActivity.countries.CountriesFragment">
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/WelcomeScreenButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:minWidth="50dp"
+        android:visibility="gone">
+
+    </ProgressBar>
+
     <TextView
         android:id="@+id/updatedTextView"
         android:layout_width="match_parent"
@@ -26,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="wrap_content"
