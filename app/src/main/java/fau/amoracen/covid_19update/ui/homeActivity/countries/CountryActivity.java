@@ -3,9 +3,12 @@ package fau.amoracen.covid_19update.ui.homeActivity.countries;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +28,8 @@ import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.CountryData;
 import fau.amoracen.covid_19update.service.APIRequest;
 import fau.amoracen.covid_19update.service.MySingleton;
+import fau.amoracen.covid_19update.ui.homeActivity.graph.LineChartFragment;
+import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
 /**
  * Updates UI with a Country Data
@@ -35,6 +40,10 @@ public class CountryActivity extends AppCompatActivity {
     private TextView casesPerOneMillionTextView, deathsPerOneMillionTextView, testTextView, testsPerOneMillionTextView;
     private ImageView imageView;
     private CountryData country;
+    private PieChartFragment pieChartFragment;
+    private FrameLayout pieChartFragmentLayout;
+    private LineChartFragment lineChartFragment;
+    private FrameLayout lineChartFragmentLayout;
 
     //Menu
     @Override
@@ -63,6 +72,12 @@ public class CountryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         country = (CountryData) Objects.requireNonNull(intent.getExtras()).getSerializable("Country");
 
+        pieChartFragmentLayout = findViewById(R.id.container_pie_chart);
+        lineChartFragmentLayout = findViewById(R.id.container_line_chart);
+        pieChartFragment = new PieChartFragment();
+        lineChartFragment = new LineChartFragment();
+
+
         imageView = findViewById(R.id.imageView);
         CountryTextView = findViewById(R.id.CountryTextView);
         dataUpdatedTextView = findViewById(R.id.updatedTextView);
@@ -80,8 +95,11 @@ public class CountryActivity extends AppCompatActivity {
         if (country == null) {
             finish();
         } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_pie_chart, pieChartFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_line_chart, lineChartFragment).commit();
             updateUI(country);
         }
+
     }
 
     /**
@@ -111,7 +129,7 @@ public class CountryActivity extends AppCompatActivity {
      *
      * @param country country returned by the API
      */
-    private void updateUI(CountryData country) {
+    private void updateUI(final CountryData country) {
         showImage(country.getCountryInfo().getFlag());
         //Get date
         long seconds = Long.parseLong(country.getUpdated());
@@ -130,6 +148,18 @@ public class CountryActivity extends AppCompatActivity {
         deathsPerOneMillionTextView.setText(getString(R.string.deaths_per_one_million, country.getDeathsPerOneMillion()));
         testTextView.setText(getString(R.string.total_test, country.getTests()));
         testsPerOneMillionTextView.setText(getString(R.string.test_per_one_million, country.getTestsPerOneMillion()));
+        //Create Pie Chart and Line Chart
+        int TIME_OUT = 500;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pieChartFragment.createPieChart(getApplicationContext(), country.getActiveNoFormat(), country.getRecoveredNoFormat(), country.getDeathsNoFormat());
+                String url = "https://corona.lmao.ninja/v2/historical/" + country.getCountry() + "?lastdays=40";
+                lineChartFragment.makeRequest("Country", url);
+                pieChartFragmentLayout.setVisibility(View.VISIBLE);
+                lineChartFragmentLayout.setVisibility(View.VISIBLE);
+            }
+        }, TIME_OUT);
     }
 
     /**
