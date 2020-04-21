@@ -14,123 +14,158 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/WelcomeScreenButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:minWidth="50dp"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/headingTextView"
-            style="@style/WorldWideStats"
+        </ProgressBar>
+
+        <LinearLayout
+            android:id="@+id/worldwideLinerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/worldwide_stats"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/updatedTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/data_updated" />
-
-        <TextView
-            android:id="@+id/recoveredTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/recovered"
-            android:textColor="@android:color/holo_green_light" />
+            android:orientation="vertical"
+            android:visibility="invisible">
 
 
-        <TextView
-            android:id="@+id/casesTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/total_confirmed_cases"
-            android:textColor="@android:color/holo_orange_light" />
+            <TextView
+                android:id="@+id/headingTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="@string/worldwide_stats"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/updatedTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/data_updated" />
+
+            <TextView
+                android:id="@+id/recoveredTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/recovered"
+                android:textColor="@android:color/holo_green_light" />
 
 
-        <TextView
-            android:id="@+id/todayCasesTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_cases"
-            android:textColor="@android:color/holo_orange_light" />
+            <TextView
+                android:id="@+id/casesTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/total_confirmed_cases"
+                android:textColor="@android:color/holo_orange_light" />
 
 
-        <TextView
-            android:id="@+id/activeTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/active_cases"
-            android:textColor="@android:color/holo_orange_light" />
-
-        <TextView
-            android:id="@+id/criticalTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/critical_cases"
-            android:textColor="@android:color/holo_orange_dark" />
-
-        <TextView
-            android:id="@+id/casesPerOneMillionTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cases_per_one_million"
-            android:textColor="@android:color/holo_orange_dark" />
-
-        <TextView
-            android:id="@+id/deathsTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/deaths"
-            android:textColor="@android:color/holo_red_light" />
-
-        <TextView
-            android:id="@+id/newDeathsTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_deaths"
-            android:textColor="@android:color/holo_red_light" />
+            <TextView
+                android:id="@+id/todayCasesTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_cases"
+                android:textColor="@android:color/holo_orange_light" />
 
 
-        <TextView
-            android:id="@+id/deathsPerOneMillionTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/deaths_per_one_million"
-            android:textColor="@android:color/holo_red_light" />
+            <TextView
+                android:id="@+id/activeTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/active_cases"
+                android:textColor="@android:color/holo_orange_light" />
 
-        <TextView
-            android:id="@+id/affectedCountriesTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/affected_countries"
-            android:textColor="@android:color/holo_red_light" />
+            <TextView
+                android:id="@+id/criticalTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/critical_cases"
+                android:textColor="@android:color/holo_orange_dark" />
 
-        <TextView
-            android:id="@+id/testTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/total_test"
-            android:textColor="@android:color/holo_blue_bright" />
+            <TextView
+                android:id="@+id/casesPerOneMillionTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cases_per_one_million"
+                android:textColor="@android:color/holo_orange_dark" />
 
-        <TextView
-            android:id="@+id/testsPerOneMillionTextView"
-            style="@style/WorldWideStats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/test_per_one_million"
-            android:textColor="@android:color/holo_blue_bright" />
+            <TextView
+                android:id="@+id/deathsTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/deaths"
+                android:textColor="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/newDeathsTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_deaths"
+                android:textColor="@android:color/holo_red_light" />
 
 
+            <TextView
+                android:id="@+id/deathsPerOneMillionTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/deaths_per_one_million"
+                android:textColor="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/affectedCountriesTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/affected_countries"
+                android:textColor="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/testTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/total_test"
+                android:textColor="@android:color/holo_blue_bright" />
+
+            <TextView
+                android:id="@+id/testsPerOneMillionTextView"
+                style="@style/WorldWideStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_per_one_million"
+                android:textColor="@android:color/holo_blue_bright" />
+
+            <FrameLayout
+                android:id="@+id/container_pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingBottom="10dp"
+                android:visibility="invisible" />
+
+            <FrameLayout
+                android:id="@+id/container_line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingBottom="10dp"
+                android:visibility="invisible" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
