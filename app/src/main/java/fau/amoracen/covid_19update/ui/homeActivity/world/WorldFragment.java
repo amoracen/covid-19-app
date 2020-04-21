@@ -2,12 +2,16 @@ package fau.amoracen.covid_19update.ui.homeActivity.world;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +24,14 @@ import com.android.volley.VolleyError;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.GlobalStats;
 import fau.amoracen.covid_19update.service.APIRequest;
 import fau.amoracen.covid_19update.service.MySingleton;
+import fau.amoracen.covid_19update.ui.homeActivity.graph.LineChartFragment;
+import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
 /**
  * Manages request to the API to get Global Stats
@@ -38,6 +45,12 @@ public class WorldFragment extends Fragment {
     private TextView criticalTextView, casePerOneMillionTextView;
     private TextView deathsPerOneMillionTextView, testsTextView;
     private TextView testPerOneMillionTextView, affectedCountriesTextView;
+    private PieChartFragment pieChartFragment;
+    private FrameLayout pieChartFragmentLayout;
+    private LineChartFragment lineChartFragment;
+    private FrameLayout lineChartFragmentLayout;
+    private ProgressBar progressBar;
+    private LinearLayout worldLinearLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -71,6 +84,9 @@ public class WorldFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBar = view.findViewById(R.id.progressBar);
+        worldLinearLayout = view.findViewById(R.id.worldwideLinerLayout);
+        progressBar.setVisibility(View.VISIBLE);
         dataUpdatedTextView = view.findViewById(R.id.updatedTextView);
         totalCasesTextView = view.findViewById(R.id.casesTextView);
         todayCasesTextView = view.findViewById(R.id.todayCasesTextView);
@@ -85,6 +101,12 @@ public class WorldFragment extends Fragment {
         testPerOneMillionTextView = view.findViewById(R.id.testsPerOneMillionTextView);
         affectedCountriesTextView = view.findViewById(R.id.affectedCountriesTextView);
         makeRequest();
+        pieChartFragmentLayout = view.findViewById(R.id.container_pie_chart);
+        pieChartFragment = new PieChartFragment();
+        lineChartFragmentLayout = view.findViewById(R.id.container_line_chart);
+        lineChartFragment = new LineChartFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.container_pie_chart, pieChartFragment).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.container_line_chart, lineChartFragment).commit();
     }
 
     /**
@@ -92,7 +114,7 @@ public class WorldFragment extends Fragment {
      *
      * @param response a GlobalStats object
      */
-    private void updateUI(GlobalStats response) {
+    private void updateUI(final GlobalStats response) {
         //Get date
         long seconds = Long.parseLong(response.getUpdated());
         Date date = new Date(seconds);
@@ -122,6 +144,20 @@ public class WorldFragment extends Fragment {
         testPerOneMillionTextView.setText(getString(R.string.test_per_one_million, response.getTestsPerOneMillion()));
         //Affected Countries
         affectedCountriesTextView.setText(getString(R.string.affected_countries, response.getAffectedCountries()));
+        //Create Pie Chart
+        int TIME_OUT = 500;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pieChartFragment.createPieChart(Objects.requireNonNull(getContext()), response.getActiveNoFormat(), response.getRecoveredNoFormat(), response.getDeathsNoFormat());
+                String url = "https://corona.lmao.ninja/v2/historical/all?lastdays=40";
+                lineChartFragment.makeRequest("All", url);
+                pieChartFragmentLayout.setVisibility(View.VISIBLE);
+                lineChartFragmentLayout.setVisibility(View.VISIBLE);
+            }
+        }, TIME_OUT);
+        progressBar.setVisibility(View.GONE);
+        worldLinearLayout.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -138,6 +174,7 @@ public class WorldFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 /*TODO Handle Error*/
+                progressBar.setVisibility(View.GONE);
                 dataUpdatedTextView.setText("Search Failed");
             }
         });
