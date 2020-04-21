@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightBackground"
-    android:orientation="vertical"
     android:padding="20dp"
     tools:context=".ui.homeActivity.countries.CountryActivity">
 
@@ -25,8 +24,11 @@
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/country_s_flag"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
                 android:minWidth="200dp"
                 android:minHeight="150dp"
+                android:orientation="vertical"
                 android:padding="5dp"
                 android:scaleType="fitCenter" />
 
@@ -135,5 +137,23 @@
             android:layout_height="wrap_content"
             android:text="@string/test_per_one_million"
             android:textColor="@android:color/holo_blue_bright" />
+
+        <FrameLayout
+            android:id="@+id/container_pie_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:id="@+id/container_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
+            android:visibility="invisible" />
+
+
     </LinearLayout>
 </ScrollView>
