@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.HorizontalScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +26,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +43,7 @@ public class USStatesFragment extends Fragment {
     private RecyclerView UsStatesRecyclerView;
     private HorizontalScrollView horizontalScrollView;
     private USStatesAdapter adapter;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,6 +59,8 @@ public class USStatesFragment extends Fragment {
 
         dataUpdatedTextView = view.findViewById(R.id.updatedTextView);
         dataUpdatedTextView.setVisibility(View.INVISIBLE);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         UsStatesRecyclerView = view.findViewById(R.id.usStatesRecyclerView);
         horizontalScrollView = view.findViewById(R.id.horizontalScrollView);
         makeRequest();
@@ -142,6 +145,7 @@ public class USStatesFragment extends Fragment {
      * @param usStates a list of states returned by the API
      */
     private void updateUI(List<USStatesData> usStates) {
+        progressBar.setVisibility(View.GONE);
         adapter = new USStatesAdapter(usStates);
         UsStatesRecyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
