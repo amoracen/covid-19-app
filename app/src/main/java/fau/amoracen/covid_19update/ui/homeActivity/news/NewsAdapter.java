@@ -157,7 +157,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterVie
             } else {
                 descriptionTextView.setText(articles.getDescription());
             }
-            if (articles.getContent() == null) {
+            if (articles.getContent() == null || articles.getContent().isEmpty()) {
                 content.setVisibility(View.GONE);
             } else {
                 content.setText(articles.getContent());
