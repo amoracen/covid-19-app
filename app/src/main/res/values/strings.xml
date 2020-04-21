@@ -65,6 +65,9 @@
     <string name="published_1_s">Published: %1$s</string>
     <string name="description">Description</string>
     <string name="content">Content</string>
-    <string name="news_api_key">aa</string>
+    <string name="cases_distribution">Cases Distribution</string>
+    <string name="total">Total </string>
+    <string name="info">Info</string>
+
     <!--getString(R.string.welcome_message, "Test", 0);-->
 </resources>
