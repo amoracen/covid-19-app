@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.HorizontalScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class CountriesFragment extends Fragment {
     private RecyclerView countriesRecyclerView;
     private HorizontalScrollView horizontalScrollView;
     private CountriesAdapter adapter;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -57,6 +59,8 @@ public class CountriesFragment extends Fragment {
 
         dataUpdatedTextView = view.findViewById(R.id.updatedTextView);
         dataUpdatedTextView.setVisibility(View.INVISIBLE);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         countriesRecyclerView = view.findViewById(R.id.countriesRecyclerView);
         horizontalScrollView = view.findViewById(R.id.horizontalScrollView);
         makeRequest();
@@ -143,6 +147,7 @@ public class CountriesFragment extends Fragment {
      * @param countries a list of countries returned by the API
      */
     private void updateUI(List<CountryData> countries) {
+        progressBar.setVisibility(View.GONE);
         adapter = new CountriesAdapter(countries);
         countriesRecyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
