@@ -90,6 +90,7 @@ public class GlobalStats implements Serializable {
     public String getRecovered() {
         return formatNumber(recovered);
     }
+
     /**
      * Get total number of recovered
      *
@@ -116,6 +117,7 @@ public class GlobalStats implements Serializable {
     public String getActive() {
         return formatNumber(active);
     }
+
     /**
      * Get active cases
      *
@@ -230,7 +232,9 @@ public class GlobalStats implements Serializable {
      * @return a string
      */
     public String getAffectedCountries() {
-        return formatNumber(affectedCountries);
+        int aff = Integer.parseInt(affectedCountries);
+        aff = aff - 2;
+        return formatNumber(String.valueOf(aff));
     }
 
     /**
@@ -239,7 +243,9 @@ public class GlobalStats implements Serializable {
      * @param affectedCountries a string
      */
     public void setAffectedCountries(String affectedCountries) {
-        this.affectedCountries = affectedCountries;
+        int aff = Integer.parseInt(affectedCountries);
+        aff = aff + 2;
+        this.affectedCountries = String.valueOf(aff);
     }
 
     /**
@@ -250,6 +256,7 @@ public class GlobalStats implements Serializable {
     public String getDeaths() {
         return formatNumber(deaths);
     }
+
     /**
      * Get number of deaths
      *
