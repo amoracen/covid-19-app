@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,7 @@ public class CountryActivity extends AppCompatActivity {
     private LineChartFragment lineChartFragment;
     private BarChartFragment barChartFragment;
     private FrameLayout pieChartFragmentLayout, lineChartFragmentLayout, barChartFragmentLayout;
+    private long timeDataWasUpdated;
 
     //Menu
     @Override
@@ -58,7 +60,13 @@ public class CountryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_refresh) {
-            makeRequest(CountryData.URLCountry + country.getCountry());
+            long currentTime = System.currentTimeMillis();
+            //660 Seconds or 11 minutes to milliseconds
+            if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                makeRequest(CountryData.URLCountry + country.getCountry());
+            } else {
+                Toast.makeText(getApplicationContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+            }
             return true;
         }
         return false;
@@ -135,8 +143,8 @@ public class CountryActivity extends AppCompatActivity {
     private void updateUI(final CountryData country) {
         showImage(country.getCountryInfo().getFlag());
         //Get date
-        long seconds = Long.parseLong(country.getUpdated());
-        Date date = new Date(seconds);
+        timeDataWasUpdated = Long.parseLong(country.getUpdated());
+        Date date = new Date(timeDataWasUpdated);
         String updatedDate = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
         dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         CountryTextView.setText(country.getCountry());

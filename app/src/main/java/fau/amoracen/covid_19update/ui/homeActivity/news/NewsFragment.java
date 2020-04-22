@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import java.util.Calendar;
+
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.NewsArticles;
 import fau.amoracen.covid_19update.service.APIRequest;
@@ -29,6 +31,7 @@ import fau.amoracen.covid_19update.service.MySingleton;
 public class NewsFragment extends Fragment {
     private RecyclerView NewsRecyclerView;
     private NewsAdapter adapter;
+    private long timeDataWasUpdated;
 
     /**
      * Add a listener to the menu to refresh the data, and search the table
@@ -59,7 +62,13 @@ public class NewsFragment extends Fragment {
         refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                //makeRequest();
+                long currentTime = System.currentTimeMillis();
+                //600 Seconds or 10 minutes to milliseconds
+                if (currentTime >= (timeDataWasUpdated + 600 * 1000)) {
+                    makeRequest();
+                } else {
+                    Toast.makeText(getContext(), "News are up to Date", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
         });
@@ -85,10 +94,11 @@ public class NewsFragment extends Fragment {
      * Start the Request to the API
      */
     private void makeRequest() {
-
         //String url = "https://newsapi.org/v2/top-headlines?country=us&q=COVID&from=2020-04-16&sortBy=publishedAt&apiKey=" + getContext().getString(R.string.news_api_key) + "&pageSize=15&page=1";
         String url = "https://newsapi.org/v2/everything?q=COVID&from=2020-04-16&sortBy=publishedAt&apiKey=" + getContext().getString(R.string.news_api_key) + "&pageSize=25&page=1&language=en";
-
+        //Get date
+        Calendar calendar = Calendar.getInstance();
+        timeDataWasUpdated = calendar.getTimeInMillis();
         APIRequest request = new APIRequest<>(url, NewsArticles.class, new Response.Listener<NewsArticles>() {
             @Override
             public void onResponse(NewsArticles response) {

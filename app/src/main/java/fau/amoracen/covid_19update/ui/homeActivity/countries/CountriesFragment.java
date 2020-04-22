@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,7 @@ public class CountriesFragment extends Fragment {
     private HorizontalScrollView horizontalScrollView;
     private CountriesAdapter adapter;
     private ProgressBar progressBar;
+    private long timeDataWasUpdated;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,8 +75,8 @@ public class CountriesFragment extends Fragment {
      */
     private void setDataUpdatedTextView(String dateSTR) {
         //Get date
-        long seconds = Long.parseLong(dateSTR);
-        Date date = new Date(seconds);
+        timeDataWasUpdated = Long.parseLong(dateSTR);
+        Date date = new Date(timeDataWasUpdated);
         String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
         dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         dataUpdatedTextView.setVisibility(View.VISIBLE);
@@ -109,7 +111,13 @@ public class CountriesFragment extends Fragment {
         refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                makeRequest();
+                long currentTime = System.currentTimeMillis();
+                //660 Seconds or 11 minutes to milliseconds
+                if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                    makeRequest();
+                } else {
+                    Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
         });

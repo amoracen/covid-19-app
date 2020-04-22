@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,7 @@ public class USStatesActivity extends AppCompatActivity {
     private USStatesData state;
     private PieChartFragment pieChartFragment;
     private FrameLayout pieChartFragmentLayout;
+    private long timeDataWasUpdated;
 
     //Menu
     @Override
@@ -49,7 +51,14 @@ public class USStatesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_refresh) {
-            makeRequest(USStatesData.URLState + state.getState());
+            long currentTime = System.currentTimeMillis();
+            //660 Seconds or 11 minutes to milliseconds
+            if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                makeRequest(USStatesData.URLState + state.getState());
+            } else {
+                Toast.makeText(getApplicationContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+            }
+
             return true;
         }
         return false;
@@ -113,6 +122,7 @@ public class USStatesActivity extends AppCompatActivity {
     private void updateUI(final USStatesData usStatesData) {
         //Get date
         Calendar calendar = Calendar.getInstance();
+        timeDataWasUpdated = calendar.getTimeInMillis();
         String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(calendar.getTime());
         dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         stateTextView.setText(usStatesData.getState());

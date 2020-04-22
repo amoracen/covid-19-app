@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,7 @@ public class WorldFragment extends Fragment {
     private FrameLayout lineChartFragmentLayout;
     private ProgressBar progressBar;
     private LinearLayout worldLinearLayout;
+    private long timeDataWasUpdated;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,7 +75,13 @@ public class WorldFragment extends Fragment {
         refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                makeRequest();
+                long currentTime = System.currentTimeMillis();
+                //660 Seconds or 11 minutes to milliseconds
+                if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                    makeRequest();
+                } else {
+                    Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
         });
@@ -116,8 +124,8 @@ public class WorldFragment extends Fragment {
      */
     private void updateUI(final GlobalStats response) {
         //Get date
-        long seconds = Long.parseLong(response.getUpdated());
-        Date date = new Date(seconds);
+        timeDataWasUpdated = Long.parseLong(response.getUpdated());
+        Date date = new Date(timeDataWasUpdated);
         String updatedDate = new SimpleDateFormat("MMM dd yyyy hh:mm:ss zzz", Locale.getDefault()).format(date);
         dataUpdatedTextView.setText(getString(R.string.data_updated, updatedDate));
         //Cases
