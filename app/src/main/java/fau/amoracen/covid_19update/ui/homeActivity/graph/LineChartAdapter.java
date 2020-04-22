@@ -47,7 +47,7 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
     @Override
     public LineChartAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(R.layout.line_chart_row, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.fragment_line_chart_list_item, parent, false);
         return new LineChartAdapterViewHolder(itemView);
     }
 
@@ -75,7 +75,7 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
 /**
  * Manages the Chart, used to set the values from the Cases list
  */
-class LineChartAdapterViewHolder extends RecyclerView.ViewHolder implements OnChartValueSelectedListener {
+ class LineChartAdapterViewHolder extends RecyclerView.ViewHolder implements OnChartValueSelectedListener {
     private LineChart lineChart;
     private TextView titleTextView, selectedTextView;
     private View view;
@@ -136,7 +136,6 @@ class LineChartAdapterViewHolder extends RecyclerView.ViewHolder implements OnCh
         data.setDrawValues(false);
 
         lineChart.setData(data);
-        lineChart.invalidate();
 
         MyXAxisValueFormatter myXAxisValueFormatter = new MyXAxisValueFormatter(xAxisList);
         XAxis xAxis = lineChart.getXAxis();
@@ -144,6 +143,7 @@ class LineChartAdapterViewHolder extends RecyclerView.ViewHolder implements OnCh
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         lineChart.setVisibility(View.VISIBLE);
+        lineChart.animateY(1000);
     }
 
     /**
