@@ -31,6 +31,7 @@ import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.GlobalStats;
 import fau.amoracen.covid_19update.service.APIRequest;
 import fau.amoracen.covid_19update.service.MySingleton;
+import fau.amoracen.covid_19update.service.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.ui.homeActivity.graph.LineChartFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
@@ -53,6 +54,7 @@ public class WorldFragment extends Fragment {
     private ProgressBar progressBar;
     private LinearLayout worldLinearLayout;
     private long timeDataWasUpdated;
+    private SQLiteDatabaseUtil sqLiteDatabaseUtil;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -92,6 +94,12 @@ public class WorldFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        /*SQLite Database*/
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "GlobalStats");
+        String query = "CREATE TABLE IF NOT EXISTS GlobalStats (updated VARCHAR, cases VARCHAR,todayCases VARCHAR,deaths VARCHAR,todayDeaths VARCHAR," +
+                "recovered VARCHAR,active VARCHAR,critical VARCHAR,casesPerOneMillion VARCHAR,deathsPerOneMillion VARCHAR,tests VARCHAR,testsPerOneMillion VARCHAR,affectedCountries VARCHAR)";
+        sqLiteDatabaseUtil.createTable(query);
+
         progressBar = view.findViewById(R.id.progressBar);
         worldLinearLayout = view.findViewById(R.id.worldwideLinerLayout);
         progressBar.setVisibility(View.VISIBLE);
@@ -176,14 +184,22 @@ public class WorldFragment extends Fragment {
             @Override
             public void onResponse(GlobalStats response) {
                 updateUI(response);
-                /*TODO SAVE SQLite*/
+                /*SAVE to SQLiteDatabase*/
+                sqLiteDatabaseUtil.checkGlobalStatsTable(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                /*TODO Handle Error*/
                 progressBar.setVisibility(View.GONE);
-                dataUpdatedTextView.setText("Search Failed");
+                GlobalStats savedInDatabase = sqLiteDatabaseUtil.getDataFromGlobalStatsTable();
+
+                if (savedInDatabase != null && savedInDatabase.getUpdated() != null) {
+                    Toast.makeText(getContext(), "Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                    updateUI(savedInDatabase);
+                } else {
+                    dataUpdatedTextView.setText(getString(R.string.data_updated, "Failed"));
+                    worldLinearLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
         // Add a request to your RequestQueue.
