@@ -134,11 +134,15 @@ public class BarChartFragment extends Fragment {
 
                 String caseKey = casesKeysIterator.next();
                 JSONObject date = allData.getJSONObject(caseKey);
+                int newDailyCases = Integer.parseInt(date.getString("new_daily_cases"));
+                int newDailyDeaths = Integer.parseInt(date.getString("new_daily_deaths"));
+                int totalCases = Integer.parseInt(date.getString("total_cases"));
+                int totalDeaths = Integer.parseInt(date.getString("total_deaths"));
 
-                newDailyCasesList.add(new BarEntry(count, Float.parseFloat(date.getString("new_daily_cases"))));
-                newDailyDeathsList.add(new BarEntry(count, Float.parseFloat(date.getString("new_daily_deaths"))));
-                totalCasesList.add(new BarEntry(count, Float.parseFloat(date.getString("total_cases"))));
-                totalDeathsList.add(new BarEntry(count, Float.parseFloat(date.getString("total_deaths"))));
+                newDailyCasesList.add(new BarEntry(count, Float.parseFloat(String.valueOf(Math.abs(newDailyCases)))));
+                newDailyDeathsList.add(new BarEntry(count, Float.parseFloat(String.valueOf(Math.abs(newDailyDeaths)))));
+                totalCasesList.add(new BarEntry(count, Float.parseFloat(String.valueOf(Math.abs(totalCases)))));
+                totalDeathsList.add(new BarEntry(count, Float.parseFloat(String.valueOf(Math.abs(totalDeaths)))));
                 //totalRecoveriesList.add(new BarEntry(count, Float.parseFloat(date.getString("total_recoveries"))));
                 count += 1;
                 //Format X Axis Labels
