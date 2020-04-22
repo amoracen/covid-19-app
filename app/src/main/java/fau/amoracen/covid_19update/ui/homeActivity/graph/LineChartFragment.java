@@ -55,12 +55,23 @@ public class LineChartFragment extends Fragment {
         allCases = new ArrayList<>();
     }
 
+    /**
+     * Clear all data
+     */
+    private void clearAll() {
+        casesYValue.clear();
+        deathsYValue.clear();
+        recoveredYValue.clear();
+        allCases.clear();
+    }
+
     public void makeRequest(final String type, String url) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        clearAll();
                         if (type.equals("Country")) {
                             getDataCountry(response);
                         } else {
