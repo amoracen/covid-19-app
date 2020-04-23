@@ -29,9 +29,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.USStatesData;
+import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.service.APIRequestList;
 import fau.amoracen.covid_19update.service.MySingleton;
 
@@ -46,6 +48,7 @@ public class USStatesFragment extends Fragment {
     private USStatesAdapter adapter;
     private ProgressBar progressBar;
     private long timeDataWasUpdated;
+    private SQLiteDatabaseUtil sqLiteDatabaseUtil;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,6 +61,11 @@ public class USStatesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        /*SQLite Database*/
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "USStatesData");
+        String query = "CREATE TABLE IF NOT EXISTS USStatesData (state VARCHAR,cases  VARCHAR,todayCases  VARCHAR,todayDeaths  VARCHAR,deaths VARCHAR," +
+                "active VARCHAR,tests VARCHAR,testsPerOneMillion VARCHAR,recovered VARCHAR)";
+        sqLiteDatabaseUtil.createTable(query);
 
         dataUpdatedTextView = view.findViewById(R.id.updatedTextView);
         dataUpdatedTextView.setVisibility(View.INVISIBLE);
@@ -102,6 +110,7 @@ public class USStatesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (adapter == null) return false;
                 adapter.getFilter().filter(newText);
                 return false;
             }
@@ -111,8 +120,8 @@ public class USStatesFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 long currentTime = System.currentTimeMillis();
-                //660 Seconds or 11 minutes to milliseconds
-                if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                //900 Seconds or 15 minutes to milliseconds
+                if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                     makeRequest();
                 } else {
                     Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
@@ -132,16 +141,28 @@ public class USStatesFragment extends Fragment {
         APIRequestList request = new APIRequestList<>(USStatesData.URL, collectionType, new Response.Listener<List<USStatesData>>() {
             @Override
             public void onResponse(List<USStatesData> response) {
+                /*Update Recovered*/
+                for (int i = 0; i < response.size(); i++) {
+                    response.get(i).setRecovered(String.valueOf(Integer.parseInt(response.get(i).getCasesNoFormat()) - Integer.parseInt(response.get(i).getActiveNoFormat()) - Integer.parseInt(response.get(i).getDeathsNoFormat())));
+                }
                 setDataUpdatedTextView();
                 updateUI(response);
-                /*TODO SAVE SQLite*/
+                /*SAVE to SQLiteDatabase*/
+                sqLiteDatabaseUtil.checkUSStatesDataTable(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                /*TODO Handle Error*/
-                dataUpdatedTextView.setText("Search Failed");
+                List<USStatesData> response = sqLiteDatabaseUtil.getDataFromUSStatesDataTable();
+                if (response != null && !response.isEmpty()) {
+                    setDataUpdatedTextView();
+                    Toast.makeText(getContext(), "Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                    updateUI(response);
+                } else {
+                    dataUpdatedTextView.setText(getString(R.string.data_updated, "Failed"));
+                    dataUpdatedTextView.setVisibility(View.VISIBLE);
+                }
             }
         });
         // Add a request to your RequestQueue.
@@ -160,5 +181,13 @@ public class USStatesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         UsStatesRecyclerView.setLayoutManager(linearLayoutManager);
         horizontalScrollView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (sqLiteDatabaseUtil != null) {
+            sqLiteDatabaseUtil.close();
+        }
     }
 }
