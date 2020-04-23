@@ -94,7 +94,7 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
      * Manages the table row, used to set the values from the USStatesData class
      */
     public class USStatesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView stateTextView, casesTextView, todayCasesTextView, deathsTextView;
+        private TextView stateTextView, casesTextView, todayCasesTextView, deathsTextView, recovered;
         private TextView todayDeathsTextView, activeTextView, testsTextView, testsPerOneMillionTextView;
 
         /**
@@ -107,6 +107,7 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
             stateTextView = itemView.findViewById(R.id.stateTextView);
             casesTextView = itemView.findViewById(R.id.casesTextView);
             todayCasesTextView = itemView.findViewById(R.id.todayCasesTextView);
+            recovered = itemView.findViewById(R.id.recoveredTextView);
             deathsTextView = itemView.findViewById(R.id.deathsTextView);
             todayDeathsTextView = itemView.findViewById(R.id.todayDeathsTextView);
             activeTextView = itemView.findViewById(R.id.activeTextView);
@@ -138,6 +139,7 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
             stateTextView.setText(usStatesData.getState());
             casesTextView.setText(usStatesData.getCases());
             todayCasesTextView.setText(usStatesData.getTodayCases());
+            recovered.setText(usStatesData.getRecovered());
             deathsTextView.setText(usStatesData.getDeaths());
             todayDeathsTextView.setText(usStatesData.getTodayDeaths());
             activeTextView.setText(usStatesData.getActive());
