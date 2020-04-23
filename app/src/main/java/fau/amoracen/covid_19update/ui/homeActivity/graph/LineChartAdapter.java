@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -75,7 +78,7 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
 /**
  * Manages the Chart, used to set the values from the Cases list
  */
- class LineChartAdapterViewHolder extends RecyclerView.ViewHolder implements OnChartValueSelectedListener {
+class LineChartAdapterViewHolder extends RecyclerView.ViewHolder implements OnChartValueSelectedListener {
     private LineChart lineChart;
     private TextView titleTextView, selectedTextView;
     private View view;
@@ -99,7 +102,9 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
         lineChart.setPinchZoom(true);
         lineChart.getDescription().setEnabled(false);
         lineChart.getAxisRight().setEnabled(false);
-        lineChart.getXAxis().setLabelCount(6, true);
+        YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setLabelCount(5, false);
+        leftAxis.setDrawZeroLine(true);
         lineChart.setOnChartValueSelectedListener(this);
     }
 
@@ -113,10 +118,22 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
         this.caseData = caseData;
         titleTextView.append(" " + type);
 
-        LineDataSet set1 = new LineDataSet(caseData, "Cases");
+        LineDataSet set1 = new LineDataSet(caseData, type);
         set1.setFillAlpha(100);
-        set1.setFillColor(view.getResources().getColor(R.color.holo_orange_light));
-        set1.setColor(view.getResources().getColor(R.color.holo_red_light));
+        if (type.equals("Cases")) {
+            set1.setFillColor(view.getResources().getColor(R.color.holo_orange_light));
+            set1.setColor(view.getResources().getColor(R.color.holo_red_light));
+            set1.setHighLightColor(view.getResources().getColor(R.color.holo_orange_light));
+        } else if (type.equals("Recovered")) {
+            set1.setFillColor(view.getResources().getColor(R.color.holo_green_light));
+            set1.setColor(view.getResources().getColor(R.color.colorAccent));
+            set1.setHighLightColor(view.getResources().getColor(R.color.holo_green_light));
+        } else {
+            set1.setFillColor(view.getResources().getColor(R.color.holo_red_light));
+            set1.setFillAlpha(50);
+            set1.setColor(view.getResources().getColor(R.color.holo_red_light));
+            set1.setHighLightColor(Color.RED);
+        }
         set1.setCircleColor(view.getResources().getColor(R.color.colorDarkGreen));
         set1.setDrawCircles(true);
         set1.setDrawCircleHole(true);
@@ -125,7 +142,6 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
         set1.setDrawFilled(true);
         set1.setDrawValues(true);
         set1.setDrawHighlightIndicators(true);
-        set1.setHighLightColor(Color.RED);
         set1.setHighlightLineWidth(3f);
         set1.setFormSize(15.f);
 
@@ -136,6 +152,7 @@ public class LineChartAdapter extends RecyclerView.Adapter<LineChartAdapterViewH
         data.setDrawValues(false);
 
         lineChart.setData(data);
+        lineChart.getAxisLeft().setValueFormatter(new LargeValueFormatter());
 
         MyXAxisValueFormatter myXAxisValueFormatter = new MyXAxisValueFormatter(xAxisList);
         XAxis xAxis = lineChart.getXAxis();
