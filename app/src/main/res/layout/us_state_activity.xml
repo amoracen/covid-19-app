@@ -30,6 +30,14 @@
             android:text="@string/data_updated" />
 
         <TextView
+            android:id="@+id/recoveredTextView"
+            style="@style/CountryStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recovered"
+            android:textColor="@android:color/holo_green_light" />
+
+        <TextView
             android:id="@+id/CasesTextView"
             style="@style/CountryStats"
             android:layout_width="match_parent"
