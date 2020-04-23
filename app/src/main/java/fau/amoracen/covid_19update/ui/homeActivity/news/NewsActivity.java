@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
-import fau.amoracen.covid_19update.data.CountryData;
 import fau.amoracen.covid_19update.data.NewsArticles;
 
 public class NewsActivity extends AppCompatActivity {
@@ -24,7 +22,7 @@ public class NewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+        setContentView(R.layout.news_activity);
 
         /*Get Data*/
         Intent intent = getIntent();

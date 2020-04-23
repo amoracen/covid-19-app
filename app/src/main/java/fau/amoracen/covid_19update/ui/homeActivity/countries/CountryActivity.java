@@ -76,7 +76,7 @@ public class CountryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_country);
+        setContentView(R.layout.country_activity);
         /*Get Data From Table*/
         Intent intent = getIntent();
         country = (CountryData) Objects.requireNonNull(intent.getExtras()).getSerializable("Country");

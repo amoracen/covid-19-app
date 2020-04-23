@@ -42,7 +42,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     @Override
     public CountriesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(R.layout.country_summary_row, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.country_fragment_row, parent, false);
         return new CountriesAdapterViewHolder(itemView);
     }
 

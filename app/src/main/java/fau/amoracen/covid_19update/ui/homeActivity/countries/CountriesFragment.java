@@ -55,7 +55,7 @@ public class CountriesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_countries, container, false);
+        return inflater.inflate(R.layout.countries_fragment, container, false);
     }
 
     @Override

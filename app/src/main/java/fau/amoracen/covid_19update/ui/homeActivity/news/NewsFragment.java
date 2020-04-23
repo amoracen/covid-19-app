@@ -80,7 +80,7 @@ public class NewsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_news, container, false);
+        return inflater.inflate(R.layout.news_fragment, container, false);
     }
 
     @Override

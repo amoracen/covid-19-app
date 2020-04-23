@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment implements FirebaseUtil.FirebaseUtil
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.main_fragment_login, container, false);
     }
 
     @Override

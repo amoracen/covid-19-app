@@ -67,7 +67,7 @@ public class USStatesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_us_state);
+        setContentView(R.layout.us_state_activity);
 
         /*Get Data From Table*/
         Intent intent = getIntent();

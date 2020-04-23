@@ -39,7 +39,7 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
     @Override
     public USStatesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(R.layout.us_state_summary_row, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.us_state_fragment_row, parent, false);
         return new USStatesAdapterViewHolder(itemView);
     }
 

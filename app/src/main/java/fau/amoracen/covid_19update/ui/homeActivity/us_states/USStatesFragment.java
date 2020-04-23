@@ -55,7 +55,7 @@ public class USStatesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_us_states, container, false);
+        return inflater.inflate(R.layout.us_states_fragment, container, false);
     }
 
     @Override

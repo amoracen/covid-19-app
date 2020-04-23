@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseUtil.Fire
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         NavController navController = Navigation.findNavController(this, R.id.my_nav_host_fragment);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();

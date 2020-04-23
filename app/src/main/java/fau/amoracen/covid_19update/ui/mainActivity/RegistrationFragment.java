@@ -39,7 +39,7 @@ public class RegistrationFragment extends Fragment implements FirebaseUtil.Fireb
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        return inflater.inflate(R.layout.main_fragment_registration, container, false);
     }
 
     @Override

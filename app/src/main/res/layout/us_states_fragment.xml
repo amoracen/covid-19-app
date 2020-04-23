@@ -87,6 +87,15 @@
                     android:textColor="@color/colorWhite" />
 
                 <TextView
+                    android:id="@+id/recoveredTextView"
+                    style="@style/TableStyleLong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_border_green"
+                    android:text="@string/total_recovered"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
                     android:id="@+id/deathsTextView"
                     style="@style/TableStyleLong"
                     android:layout_width="wrap_content"

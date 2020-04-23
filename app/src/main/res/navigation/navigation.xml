@@ -7,7 +7,7 @@
         android:id="@+id/welcomeFragment"
         android:name="fau.amoracen.covid_19update.ui.mainActivity.WelcomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_welcome">
+        tools:layout="@layout/main_fragment_welcome">
         <action
             android:id="@+id/action_welcomeFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
@@ -20,7 +20,7 @@
         android:id="@+id/registrationFragment"
         android:name="fau.amoracen.covid_19update.ui.mainActivity.RegistrationFragment"
         android:label="Registration"
-        tools:layout="@layout/fragment_registration">
+        tools:layout="@layout/main_fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_LoginFragment"
             app:destination="@id/loginFragment"
@@ -33,7 +33,7 @@
         android:id="@+id/loginFragment"
         android:name="fau.amoracen.covid_19update.ui.mainActivity.LoginFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_login">
+        tools:layout="@layout/main_fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_RegistrationPassword"
             app:destination="@id/registrationFragment"
