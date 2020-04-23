@@ -29,9 +29,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.CountryData;
+import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.service.APIRequestList;
 import fau.amoracen.covid_19update.service.MySingleton;
 
@@ -46,6 +48,7 @@ public class CountriesFragment extends Fragment {
     private CountriesAdapter adapter;
     private ProgressBar progressBar;
     private long timeDataWasUpdated;
+    private SQLiteDatabaseUtil sqLiteDatabaseUtil;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,6 +61,12 @@ public class CountriesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        /*SQLite Database*/
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "CountryData");
+        String query = "CREATE TABLE IF NOT EXISTS CountryData (country VARCHAR,updated  VARCHAR, cases VARCHAR, todayCases VARCHAR,deaths VARCHAR," +
+                "todayDeaths VARCHAR,recovered VARCHAR,active VARCHAR,critical VARCHAR,casesPerOneMillion VARCHAR,deathsPerOneMillion VARCHAR," +
+                "tests VARCHAR,testsPerOneMillion VARCHAR,flag VARCHAR,iso2 VARCHAR,iso3 VARCHAR)";
+        sqLiteDatabaseUtil.createTable(query);
 
         dataUpdatedTextView = view.findViewById(R.id.updatedTextView);
         dataUpdatedTextView.setVisibility(View.INVISIBLE);
@@ -103,6 +112,7 @@ public class CountriesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (adapter == null) return false;
                 adapter.getFilter().filter(newText);
                 return false;
             }
@@ -112,8 +122,8 @@ public class CountriesFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 long currentTime = System.currentTimeMillis();
-                //660 Seconds or 11 minutes to milliseconds
-                if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                //900 Seconds or 15 minutes to milliseconds
+                if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                     makeRequest();
                 } else {
                     Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
@@ -135,14 +145,24 @@ public class CountriesFragment extends Fragment {
             public void onResponse(List<CountryData> response) {
                 setDataUpdatedTextView(response.get(0).getUpdated());
                 updateUI(response);
-                /*TODO SAVE SQLite*/
+                /*SAVE to SQLiteDatabase*/
+                sqLiteDatabaseUtil.checkCountryDataTable(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                /*TODO Handle Error*/
-                dataUpdatedTextView.setText("Search Failed");
+                progressBar.setVisibility(View.GONE);
+                List<CountryData> response = sqLiteDatabaseUtil.getDataFromCountryDataTable();
+
+                if (response != null && !response.isEmpty()) {
+                    setDataUpdatedTextView(response.get(0).getUpdated());
+                    Toast.makeText(getContext(), "Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                    updateUI(response);
+                } else {
+                    dataUpdatedTextView.setText(getString(R.string.data_updated, "Failed"));
+                    dataUpdatedTextView.setVisibility(View.VISIBLE);
+                }
             }
         });
         // Add a request to your RequestQueue.
@@ -161,5 +181,13 @@ public class CountriesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         countriesRecyclerView.setLayoutManager(linearLayoutManager);
         horizontalScrollView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (sqLiteDatabaseUtil != null) {
+            sqLiteDatabaseUtil.close();
+        }
     }
 }
