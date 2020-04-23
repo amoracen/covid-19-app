@@ -31,7 +31,7 @@ import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.GlobalStats;
 import fau.amoracen.covid_19update.service.APIRequest;
 import fau.amoracen.covid_19update.service.MySingleton;
-import fau.amoracen.covid_19update.service.SQLiteDatabaseUtil;
+import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.ui.homeActivity.graph.LineChartFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
@@ -78,8 +78,8 @@ public class WorldFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 long currentTime = System.currentTimeMillis();
-                //660 Seconds or 11 minutes to milliseconds
-                if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+                //720 Seconds or 12 minutes to milliseconds
+                if (currentTime >= (timeDataWasUpdated + 720 * 1000)) {
                     makeRequest();
                 } else {
                     Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
@@ -204,5 +204,13 @@ public class WorldFragment extends Fragment {
         });
         // Add a request to your RequestQueue.
         MySingleton.getInstance(getContext()).addToRequestQueue(request);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (sqLiteDatabaseUtil != null) {
+            sqLiteDatabaseUtil.close();
+        }
     }
 }
