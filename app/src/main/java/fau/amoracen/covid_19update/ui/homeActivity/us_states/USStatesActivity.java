@@ -33,7 +33,7 @@ import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
 public class USStatesActivity extends AppCompatActivity {
     private TextView stateTextView, casesTextView, todayCasesTextView, deathsTextView, dataUpdatedTextView;
-    private TextView todayDeathsTextView, activeTextView, testsTextView, testsPerOneMillionTextView;
+    private TextView todayDeathsTextView, activeTextView, testsTextView, testsPerOneMillionTextView, recovered;
     private USStatesData state;
     private PieChartFragment pieChartFragment;
     private FrameLayout pieChartFragmentLayout;
@@ -52,8 +52,8 @@ public class USStatesActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_refresh) {
             long currentTime = System.currentTimeMillis();
-            //660 Seconds or 11 minutes to milliseconds
-            if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+            //900 Seconds or 15 minutes to milliseconds
+            if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                 makeRequest(USStatesData.URLState + state.getState());
             } else {
                 Toast.makeText(getApplicationContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
@@ -78,6 +78,7 @@ public class USStatesActivity extends AppCompatActivity {
         stateTextView = findViewById(R.id.stateTextView);
         casesTextView = findViewById(R.id.CasesTextView);
         todayCasesTextView = findViewById(R.id.todayCasesTextView);
+        recovered = findViewById(R.id.recoveredTextView);
         deathsTextView = findViewById(R.id.deathsTextView);
         todayDeathsTextView = findViewById(R.id.todayDeathsTextView);
         activeTextView = findViewById(R.id.activeTextView);
@@ -100,14 +101,13 @@ public class USStatesActivity extends AppCompatActivity {
             @Override
             public void onResponse(USStatesData response) {
                 updateUI(response);
-                /*TODO SAVE SQLite*/
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                /*TODO Handle Error*/
-                dataUpdatedTextView.setText("Search Failed");
+                Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         // Add a request to your RequestQueue.
@@ -128,6 +128,7 @@ public class USStatesActivity extends AppCompatActivity {
         stateTextView.setText(usStatesData.getState());
         casesTextView.setText(getString(R.string.total_confirmed_cases, usStatesData.getCases()));
         todayCasesTextView.setText(getString(R.string.new_cases, usStatesData.getTodayCases()));
+        recovered.setText(getString(R.string.recovered, usStatesData.getRecovered()));
         deathsTextView.setText(getString(R.string.deaths, usStatesData.getDeaths()));
         todayDeathsTextView.setText(getString(R.string.new_deaths, usStatesData.getTodayDeaths()));
         activeTextView.setText(getString(R.string.active_cases, usStatesData.getActive()));
