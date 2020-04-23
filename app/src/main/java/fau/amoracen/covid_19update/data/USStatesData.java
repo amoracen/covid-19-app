@@ -18,7 +18,7 @@ public class USStatesData implements Serializable {
     public final static String URLState = "https://corona.lmao.ninja/v2/states/";
     /*Data returned by the API*/
     private String state, cases, todayCases, todayDeaths, deaths;
-    private String active, tests, testsPerOneMillion;
+    private String active, tests, testsPerOneMillion, recovered;
 
     /**
      * Get State Name
@@ -142,7 +142,23 @@ public class USStatesData implements Serializable {
      * @return a string
      */
     public String getRecoveredNoFormat() {
-        return String.valueOf(Integer.parseInt(getCasesNoFormat()) - Integer.parseInt(getActiveNoFormat()) - Integer.parseInt(getDeathsNoFormat()));
+        return recovered;
+    }
+
+    /**
+     * Get recovered cases
+     *
+     * @return a string
+     */
+    public String getRecovered() {
+        return formatNumber(recovered);
+    }
+
+    /**
+     * Set recovered cases
+     */
+    public void setRecovered(String recovered) {
+        this.recovered = recovered;
     }
 
     /**
