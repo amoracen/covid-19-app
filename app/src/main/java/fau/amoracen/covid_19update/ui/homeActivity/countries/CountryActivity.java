@@ -61,8 +61,8 @@ public class CountryActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_refresh) {
             long currentTime = System.currentTimeMillis();
-            //660 Seconds or 11 minutes to milliseconds
-            if (currentTime >= (timeDataWasUpdated + 660 * 1000)) {
+            //900 Seconds or 15 minutes to milliseconds
+            if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                 makeRequest(CountryData.URLCountry + country.getCountry());
             } else {
                 Toast.makeText(getApplicationContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
@@ -110,7 +110,6 @@ public class CountryActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container_bar_chart, barChartFragment).commit();
             updateUI(country);
         }
-
     }
 
     /**
@@ -121,14 +120,13 @@ public class CountryActivity extends AppCompatActivity {
             @Override
             public void onResponse(CountryData response) {
                 updateUI(response);
-                /*TODO SAVE SQLite*/
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                /*TODO Handle Error*/
-                dataUpdatedTextView.setText("Search Failed");
+                Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         // Add a request to your RequestQueue.
