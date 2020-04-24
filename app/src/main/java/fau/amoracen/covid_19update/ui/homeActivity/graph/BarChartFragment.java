@@ -146,15 +146,7 @@ public class BarChartFragment extends Fragment {
                 //totalRecoveriesList.add(new BarEntry(count, Float.parseFloat(date.getString("total_recoveries"))));
                 count += 1;
                 //Format X Axis Labels
-                if (!caseKey.equals("4/20/20") && !caseKey.equals("3/20/20")) {
-                    xAxisList.add(caseKey.replace("/20", ""));
-                } else {
-                    if (caseKey.equals("4/20/20")) {
-                        xAxisList.add("4/20");
-                    } else {
-                        xAxisList.add("3/20");
-                    }
-                }
+                xAxisList.add(caseKey.replaceFirst("/20", ""));
             }
         } catch (JSONException e) {
             e.printStackTrace();
