@@ -1,6 +1,7 @@
 package fau.amoracen.covid_19update.ui.homeActivity.graph;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class LineChartFragment extends Fragment {
     private ArrayList<ArrayList> allCases;
     private RecyclerView lineChartRecyclerView;
     private JSONObject casesJSONObject, recoveredJSONObject, deathsJSONObject;
-    private String days;
+    private String days, country;
     private SQLiteDatabaseUtil sqLiteDatabaseUtil;
     private TextView errorTextView;
 
@@ -65,7 +66,7 @@ public class LineChartFragment extends Fragment {
         sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS HistoricalAll (dates_values  VARCHAR)";
         String query2 = "CREATE TABLE IF NOT EXISTS HistoricalAllDays (days  VARCHAR)";
-        String query3 = "CREATE TABLE IF NOT EXISTS HistoricalCountry (dates_values  VARCHAR)";
+        String query3 = "CREATE TABLE IF NOT EXISTS HistoricalCountry (dates_values  VARCHAR,country VARCHAR)";
         String query4 = "CREATE TABLE IF NOT EXISTS HistoricalCountryDays (days  VARCHAR)";
         sqLiteDatabaseUtil.createTable(query);
         sqLiteDatabaseUtil.createTable(query2);
@@ -94,7 +95,12 @@ public class LineChartFragment extends Fragment {
                         if (type.equals("Country")) {
                             getDataCountry(response);
                             /*SAVE to SQLiteDatabase*/
-                            sqLiteDatabaseUtil.checkHistoricalCountryTable(getDays(), response.toString());
+                            try {
+                                String country = response.getString("country");
+                                sqLiteDatabaseUtil.checkHistoricalCountryTable(getDays(), country.toLowerCase(), response.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             getDataAll(response);
                             /*SAVE to SQLiteDatabase*/
@@ -105,13 +111,12 @@ public class LineChartFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Line Chart Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
                         String savedResponse = null;
                         String days = null;
                         try {
                             if (type.equals("Country")) {
                                 days = sqLiteDatabaseUtil.getDataFromHistoricalCountryDaysTable();
-                                savedResponse = sqLiteDatabaseUtil.getDataFromHistoricalCountryTable();
+                                savedResponse = sqLiteDatabaseUtil.getDataFromHistoricalCountryTable(getCountry().toLowerCase());
                                 if (savedResponse != null && days != null) {
                                     setDays(days);
                                     JSONObject response = new JSONObject(savedResponse);
@@ -130,8 +135,11 @@ public class LineChartFragment extends Fragment {
                             e.printStackTrace();
                         }
                         if (savedResponse == null || days == null) {
+                            Log.i("Tag", "HistoricalCountry NOT Found:" + getCountry());
                             errorTextView.setVisibility(View.VISIBLE);
                             errorTextView.setText(getString(R.string.update_failed));
+                        } else {
+                            Toast.makeText(getContext(), "Line Chart Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -251,5 +259,13 @@ public class LineChartFragment extends Fragment {
         if (sqLiteDatabaseUtil != null) {
             sqLiteDatabaseUtil.close();
         }
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
