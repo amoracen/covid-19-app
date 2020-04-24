@@ -2,6 +2,7 @@ package fau.amoracen.covid_19update.ui.homeActivity.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -17,8 +18,8 @@ import fau.amoracen.covid_19update.data.NewsArticles;
 public class NewsActivity extends AppCompatActivity {
 
     private WebView webView;
-    private NewsArticles.Articles article;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,7 @@ public class NewsActivity extends AppCompatActivity {
 
         /*Get Data*/
         Intent intent = getIntent();
-        article = (NewsArticles.Articles) Objects.requireNonNull(intent.getExtras()).getSerializable("News");
+        NewsArticles.Articles article = (NewsArticles.Articles) Objects.requireNonNull(intent.getExtras()).getSerializable("News");
         if (article == null) finish();
         webView = findViewById(R.id.webView);
         webView.setInitialScale(1);
@@ -38,6 +39,7 @@ public class NewsActivity extends AppCompatActivity {
         webView.getSettings().setUseWideViewPort(true);
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        assert article != null;
         webView.loadUrl(article.getUrl());
     }
 
