@@ -8,6 +8,19 @@
     android:orientation="vertical"
     tools:context=".ui.homeActivity.graph.LineChartFragment">
 
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:visibility="gone">
+
+    </TextView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lineChartRecyclerView"
         android:layout_width="match_parent"
