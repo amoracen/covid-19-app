@@ -68,6 +68,16 @@
     <string name="cases_distribution">Cases Distribution</string>
     <string name="total">Total </string>
     <string name="info">Info</string>
-
+    <string name="number_of_days_you_want_the_data">Number of days you want the data:</string>
+    <string-array name="days">
+        <item>15</item>
+        <item>25</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+    <string name="update_failed">Update Failed</string>
     <!--getString(R.string.welcome_message, "Test", 0);-->
 </resources>
