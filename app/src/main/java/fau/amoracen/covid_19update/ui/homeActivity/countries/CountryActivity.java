@@ -130,6 +130,21 @@ public class CountryActivity extends AppCompatActivity {
 
             }
         });
+        Spinner spinnerBarChart = findViewById(R.id.daysBarSpinner);
+        spinnerBarChart.setAdapter(spinnerAdapter);
+        spinnerBarChart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String day = adapterView.getItemAtPosition(position).toString();
+                /*Make Request to update Bar Charts*/
+                updateBarChart(Integer.parseInt(day));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 
@@ -184,9 +199,7 @@ public class CountryActivity extends AppCompatActivity {
             @Override
             public void run() {
                 pieChartFragment.createPieChart(getApplicationContext(), country.getActiveNoFormat(), country.getRecoveredNoFormat(), country.getDeathsNoFormat());
-                barChartFragment.makeRequest(country.getCountryInfo().getIso2());
                 pieChartFragmentLayout.setVisibility(View.VISIBLE);
-                barChartFragmentLayout.setVisibility(View.VISIBLE);
             }
         }, TIME_OUT);
     }
@@ -202,6 +215,18 @@ public class CountryActivity extends AppCompatActivity {
         lineChartFragment.setCountry(country.getCountry());
         lineChartFragment.makeRequest("Country", url);
         lineChartFragmentLayout.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Update Bar Charts
+     *
+     * @param days a string
+     */
+    private void updateBarChart(int days) {
+        barChartFragment.setDays(days);
+        barChartFragment.setCountry(country.getCountry());
+        barChartFragment.makeRequest(country.getCountryInfo().getIso2());
+        barChartFragmentLayout.setVisibility(View.VISIBLE);
     }
 
     /**
