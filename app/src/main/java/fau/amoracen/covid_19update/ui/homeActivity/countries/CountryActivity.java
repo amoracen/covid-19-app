@@ -199,6 +199,7 @@ public class CountryActivity extends AppCompatActivity {
     private void updateLineChart(String days) {
         String url = "https://corona.lmao.ninja/v2/historical/" + country.getCountry() + "?lastdays=" + days;
         lineChartFragment.setDays(days);
+        lineChartFragment.setCountry(country.getCountry());
         lineChartFragment.makeRequest("Country", url);
         lineChartFragmentLayout.setVisibility(View.VISIBLE);
     }
