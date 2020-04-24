@@ -78,11 +78,11 @@ public class SQLiteDatabaseUtil {
      */
     public void checkGlobalStatsTable(GlobalStats globalStats) {
         if (isTableEmpty("GlobalStats")) {
-            Log.i("Tag", "Empty Table -> Go to Insert");
+            Log.i("Tag", "GlobalStats Empty Table -> Go to Insert");
             insertToGlobalStatsTable(globalStats);
             return;
         }
-        Log.i("Tag", "Table not Empty -> Go to Update");
+        Log.i("Tag", "GlobalStats Table not Empty -> Go to Update");
         updateGlobalStatsTable(globalStats);
     }
 
@@ -95,13 +95,13 @@ public class SQLiteDatabaseUtil {
     public void checkCountryDataTable(List<CountryData> countryData) {
         if (!isTableEmpty("CountryData")) {
             try {
-                Log.i("Tag", "Table not Empty -> Delete");
+                Log.i("Tag", "CountryData Table not Empty -> Delete");
                 myDatabase.execSQL("DELETE FROM CountryData");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        Log.i("Tag", "Empty Table -> Go to Insert");
+        Log.i("Tag", "CountryData Empty Table -> Go to Insert");
         for (int i = 0; i < countryData.size(); i++) {
             insertToCountryDataTable(countryData.get(i));
         }
@@ -116,16 +116,198 @@ public class SQLiteDatabaseUtil {
     public void checkUSStatesDataTable(List<USStatesData> response) {
         if (!isTableEmpty("USStatesData")) {
             try {
-                Log.i("Tag", "Table not Empty -> Delete");
+                Log.i("Tag", "USStatesData Table not Empty -> Delete");
                 myDatabase.execSQL("DELETE FROM USStatesData");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        Log.i("Tag", "Empty Table -> Go to Insert");
+        Log.i("Tag", "USStatesData Empty Table -> Go to Insert");
         for (int i = 0; i < response.size(); i++) {
             insertToUSStatesDataTable(response.get(i));
         }
+    }
+
+    /**
+     * Insert to table if table is empty
+     * Update table if not Empty
+     *
+     * @param response a string from a JSONObject
+     */
+    public void checkHistoricalAllTable(String days, String response) {
+        if (!isTableEmpty("HistoricalAll") && !isTableEmpty("HistoricalAllDays")) {
+            try {
+                Log.i("Tag", "HistoricalAll Table not Empty -> Delete");
+                myDatabase.execSQL("DELETE FROM HistoricalAll");
+                Log.i("Tag", "HistoricalAllDays Table not Empty -> Delete");
+                myDatabase.execSQL("DELETE FROM HistoricalAllDays");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.i("Tag", "HistoricalAll Empty Table -> Go to Insert");
+        insertToHistoricalAllTable(response);
+        Log.i("Tag", "HistoricalAllDays Empty Table -> Go to Insert");
+        insertToHistoricalAllDaysTable(days);
+    }
+
+    /**
+     * Insert to table if table is empty
+     * Update table if not Empty
+     *
+     * @param response a string from a JSONObject
+     */
+    public void checkHistoricalCountryTable(String days, String country, String response) {
+        if (!isTableEmpty("HistoricalCountry") && !isTableEmpty("HistoricalCountryDays")) {
+            try {
+                Log.i("Tag", "HistoricalCountry Table not Empty -> Delete");
+                myDatabase.execSQL("DELETE FROM HistoricalCountry WHERE country = '" + country + "'");
+                Log.i("Tag", "HistoricalCountryDays Table not Empty -> Delete");
+                myDatabase.execSQL("DELETE FROM HistoricalCountryDays");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.i("Tag", "HistoricalCountry Empty Table -> Go to Insert");
+        insertToHistoricalCountryTable(country, response);
+        Log.i("Tag", "HistoricalCountryDays Empty Table -> Go to Insert");
+        insertToHistoricalCountryDaysTable(days);
+    }
+
+    /**
+     * Inset to HistoricalAll Table
+     *
+     * @param response a string
+     */
+    private void insertToHistoricalAllTable(String response) {
+        String query = "Insert into HistoricalAll (dates_values) Values" +
+                "('" + response + "')";
+        try {
+            myDatabase.execSQL(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inset to HistoricalCountry Table
+     *
+     * @param response a string
+     */
+    private void insertToHistoricalCountryTable(String country, String response) {
+        String query = "Insert into HistoricalCountry (dates_values,country) Values" +
+                "('" + response + "','" + country + "')";
+        try {
+            myDatabase.execSQL(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inset to HistoricalAllDays Table
+     *
+     * @param days a string
+     */
+    private void insertToHistoricalAllDaysTable(String days) {
+        String query = "Insert into HistoricalAllDays (days) Values" +
+                "('" + days + "')";
+        try {
+            myDatabase.execSQL(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inset to HistoricalCountryDays Table
+     *
+     * @param days a string
+     */
+    private void insertToHistoricalCountryDaysTable(String days) {
+        String query = "Insert into HistoricalCountryDays (days) Values" +
+                "('" + days + "')";
+        try {
+            myDatabase.execSQL(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get Data from HistoricalAll Table
+     */
+    public String getDataFromHistoricalAllTable() {
+        String dates_values = null;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM HistoricalAll", null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                dates_values = c.getString(c.getColumnIndex("dates_values"));
+                c.moveToNext();
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dates_values;
+    }
+
+    /**
+     * Get Data from HistoricalCountry Table
+     */
+    public String getDataFromHistoricalCountryTable(String country) {
+        String dates_values = null;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM HistoricalCountry  WHERE country = '" + country + "'", null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                dates_values = c.getString(c.getColumnIndex("dates_values"));
+                c.moveToNext();
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dates_values;
+    }
+
+    /**
+     * Get Data from HistoricalAllDays Table
+     */
+    public String getDataFromHistoricalAllDaysTable() {
+        String days = null;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM HistoricalAllDays", null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                days = c.getString(c.getColumnIndex("days"));
+                c.moveToNext();
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return days;
+    }
+
+    /**
+     * Get Data from HistoricalCountryDays Table
+     */
+    public String getDataFromHistoricalCountryDaysTable() {
+        String days = null;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM HistoricalCountryDays", null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                days = c.getString(c.getColumnIndex("days"));
+                c.moveToNext();
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return days;
     }
 
     /**
