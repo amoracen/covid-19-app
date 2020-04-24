@@ -62,7 +62,7 @@ public class USStatesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*SQLite Database*/
-        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "USStatesData");
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS USStatesData (state VARCHAR,cases  VARCHAR,todayCases  VARCHAR,todayDeaths  VARCHAR,deaths VARCHAR," +
                 "active VARCHAR,tests VARCHAR,testsPerOneMillion VARCHAR,recovered VARCHAR)";
         sqLiteDatabaseUtil.createTable(query);
