@@ -8,8 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,7 +113,25 @@ public class CountryActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container_bar_chart, barChartFragment).commit();
             updateUI(country);
         }
+        Spinner spinner = findViewById(R.id.daysSpinner);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.days, R.layout.spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String day = adapterView.getItemAtPosition(position).toString();
+                /*Make Request to update Line Charts*/
+                updateLineChart(day);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
+
 
     /**
      * Start the Request to the API
@@ -157,20 +178,29 @@ public class CountryActivity extends AppCompatActivity {
         deathsPerOneMillionTextView.setText(getString(R.string.deaths_per_one_million, country.getDeathsPerOneMillion()));
         testTextView.setText(getString(R.string.total_test, country.getTests()));
         testsPerOneMillionTextView.setText(getString(R.string.test_per_one_million, country.getTestsPerOneMillion()));
-        //Create Pie Chart and Line Chart
+        //Create Pie Chart
         int TIME_OUT = 500;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 pieChartFragment.createPieChart(getApplicationContext(), country.getActiveNoFormat(), country.getRecoveredNoFormat(), country.getDeathsNoFormat());
-                String url = "https://corona.lmao.ninja/v2/historical/" + country.getCountry() + "?lastdays=40";
-                lineChartFragment.makeRequest("Country", url);
                 barChartFragment.makeRequest(country.getCountryInfo().getIso2());
                 pieChartFragmentLayout.setVisibility(View.VISIBLE);
-                lineChartFragmentLayout.setVisibility(View.VISIBLE);
                 barChartFragmentLayout.setVisibility(View.VISIBLE);
             }
         }, TIME_OUT);
+    }
+
+    /**
+     * Update Line Charts
+     *
+     * @param days a string
+     */
+    private void updateLineChart(String days) {
+        String url = "https://corona.lmao.ninja/v2/historical/" + country.getCountry() + "?lastdays=" + days;
+        lineChartFragment.setDays(days);
+        lineChartFragment.makeRequest("Country", url);
+        lineChartFragmentLayout.setVisibility(View.VISIBLE);
     }
 
     /**
