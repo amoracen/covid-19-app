@@ -9,9 +9,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -116,13 +119,32 @@ public class WorldFragment extends Fragment {
         testsTextView = view.findViewById(R.id.testTextView);
         testPerOneMillionTextView = view.findViewById(R.id.testsPerOneMillionTextView);
         affectedCountriesTextView = view.findViewById(R.id.affectedCountriesTextView);
-        makeRequest();
         pieChartFragmentLayout = view.findViewById(R.id.container_pie_chart);
         pieChartFragment = new PieChartFragment();
         lineChartFragmentLayout = view.findViewById(R.id.container_line_chart);
         lineChartFragment = new LineChartFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.container_pie_chart, pieChartFragment).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.container_line_chart, lineChartFragment).commit();
+
+        Spinner spinner = view.findViewById(R.id.daysSpinner);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.days, R.layout.spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String day = adapterView.getItemAtPosition(position).toString();
+                /*Make Request to update Line Charts*/
+                updateLineChart(day);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        /*Make Request to the API*/
+        makeRequest();
     }
 
     /**
@@ -166,14 +188,23 @@ public class WorldFragment extends Fragment {
             @Override
             public void run() {
                 pieChartFragment.createPieChart(Objects.requireNonNull(getContext()), response.getActiveNoFormat(), response.getRecoveredNoFormat(), response.getDeathsNoFormat());
-                String url = "https://corona.lmao.ninja/v2/historical/all?lastdays=40";
-                lineChartFragment.makeRequest("All", url);
                 pieChartFragmentLayout.setVisibility(View.VISIBLE);
-                lineChartFragmentLayout.setVisibility(View.VISIBLE);
             }
         }, TIME_OUT);
         progressBar.setVisibility(View.GONE);
         worldLinearLayout.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Update Line Charts
+     *
+     * @param days a string
+     */
+    private void updateLineChart(final String days) {
+        String url = "https://corona.lmao.ninja/v2/historical/all?lastdays=" + days;
+        lineChartFragment.setDays(days);
+        lineChartFragment.makeRequest("All", url);
+        lineChartFragmentLayout.setVisibility(View.VISIBLE);
     }
 
     /**
