@@ -32,9 +32,9 @@ import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.GlobalStats;
+import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.service.APIRequest;
 import fau.amoracen.covid_19update.service.MySingleton;
-import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.ui.homeActivity.graph.LineChartFragment;
 import fau.amoracen.covid_19update.ui.homeActivity.graph.PieChartFragment;
 
@@ -98,7 +98,7 @@ public class WorldFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*SQLite Database*/
-        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "GlobalStats");
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS GlobalStats (updated VARCHAR, cases VARCHAR,todayCases VARCHAR,deaths VARCHAR,todayDeaths VARCHAR," +
                 "recovered VARCHAR,active VARCHAR,critical VARCHAR,casesPerOneMillion VARCHAR,deathsPerOneMillion VARCHAR,tests VARCHAR,testsPerOneMillion VARCHAR,affectedCountries VARCHAR)";
         sqLiteDatabaseUtil.createTable(query);
