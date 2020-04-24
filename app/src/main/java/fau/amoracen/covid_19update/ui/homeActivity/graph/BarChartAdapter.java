@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -84,6 +85,7 @@ public class BarChartAdapter extends RecyclerView.Adapter<BarChartAdapter.BarCha
         private TextView titleTextView, selectedTextView;
         private List<String> xAxisList;
         private ArrayList caseData;
+        private View view;
 
         /**
          * Constructor
@@ -92,6 +94,7 @@ public class BarChartAdapter extends RecyclerView.Adapter<BarChartAdapter.BarCha
          */
         BarChartAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.view = itemView;
             barChart = itemView.findViewById(R.id.barChart);
             selectedTextView = itemView.findViewById(R.id.selectedTextView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
@@ -124,8 +127,13 @@ public class BarChartAdapter extends RecyclerView.Adapter<BarChartAdapter.BarCha
             titleTextView.setText(type);
 
             BarDataSet set1 = new BarDataSet(caseData, type);
-            set1.setColors(Color.RED);
-            set1.setHighLightColor(Color.BLACK);
+            if (type.equals("New Daily Cases") || type.equals("Total Cases")) {
+                set1.setColors(view.getResources().getColor(R.color.holo_orange_light));
+                set1.setHighLightColor(view.getResources().getColor(R.color.holo_red_light));
+            } else if (type.equals("New Daily Deaths") || type.equals("Total Deaths")) {
+                set1.setColors(view.getResources().getColor(R.color.holo_red_light));
+                set1.setHighLightColor(Color.BLACK);
+            }
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
@@ -141,8 +149,9 @@ public class BarChartAdapter extends RecyclerView.Adapter<BarChartAdapter.BarCha
             xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
 
             barChart.setData(data);
+            barChart.getAxisLeft().setValueFormatter(new LargeValueFormatter());
             barChart.setFitBars(true);
-            barChart.animateY(1000);
+            barChart.animateXY(1000, 1000);
             barChart.setVisibility(View.VISIBLE);
         }
 
