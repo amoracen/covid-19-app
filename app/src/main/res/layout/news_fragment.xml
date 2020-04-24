@@ -3,14 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/newsFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/colorLightBackground"
     android:orientation="vertical"
     tools:context="fau.amoracen.covid_19update.ui.homeActivity.news.NewsFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/WelcomeScreenButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:minWidth="50dp"
+        android:visibility="gone">
+
+    </ProgressBar>
+
+    <TextView
+        android:id="@+id/errorTextView"
+        style="@style/WorldWideStats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:text="@string/latest_news"
+        android:textSize="30sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </LinearLayout>
