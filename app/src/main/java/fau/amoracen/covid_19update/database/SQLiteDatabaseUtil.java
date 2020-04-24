@@ -175,6 +175,29 @@ public class SQLiteDatabaseUtil {
     }
 
     /**
+     * Insert to table if table is empty
+     * Update table if not Empty
+     *
+     * @param response a string from a JSONObject
+     */
+    public void checkCountryTimelineTable(int days, String country, String response) {
+        if (!isTableEmpty("CountryTimeline") && !isTableEmpty("CountryTimelineDays")) {
+            try {
+                Log.i("Tag", "CountryTimeline Table not Empty -> Delete");
+                myDatabase.execSQL("DELETE FROM CountryTimeline WHERE country = '" + country + "'");
+                Log.i("Tag", "CountryTimelineDays Table not Empty -> Delete");
+                myDatabase.execSQL("DELETE FROM CountryTimelineDays");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.i("Tag", "CountryTimeline Empty Table -> Go to Insert");
+        insertToCountryTimelineTable(country, response);
+        Log.i("Tag", "CountryTimelineDays Empty Table -> Go to Insert");
+        insertToCountryTimelineDaysTable(days);
+    }
+
+    /**
      * Inset to HistoricalAll Table
      *
      * @param response a string
@@ -205,12 +228,42 @@ public class SQLiteDatabaseUtil {
     }
 
     /**
+     * Inset to CountryTimeline Table
+     *
+     * @param response a string
+     */
+    private void insertToCountryTimelineTable(String country, String response) {
+        String query = "Insert into CountryTimeline (dates_values,country) Values" +
+                "('" + response + "','" + country + "')";
+        try {
+            myDatabase.execSQL(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Inset to HistoricalAllDays Table
      *
      * @param days a string
      */
     private void insertToHistoricalAllDaysTable(String days) {
         String query = "Insert into HistoricalAllDays (days) Values" +
+                "('" + days + "')";
+        try {
+            myDatabase.execSQL(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inset to CountryTimelineDays Table
+     *
+     * @param days a string
+     */
+    private void insertToCountryTimelineDaysTable(int days) {
+        String query = "Insert into CountryTimelineDays (days) Values" +
                 "('" + days + "')";
         try {
             myDatabase.execSQL(query);
@@ -273,6 +326,25 @@ public class SQLiteDatabaseUtil {
     }
 
     /**
+     * Get Data from CountryTimelineDays Table
+     */
+    public String getDataFromCountryTimelineTable(String country) {
+        String dates_values = null;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM CountryTimeline  WHERE country = '" + country + "'", null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                dates_values = c.getString(c.getColumnIndex("dates_values"));
+                c.moveToNext();
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dates_values;
+    }
+
+    /**
      * Get Data from HistoricalAllDays Table
      */
     public String getDataFromHistoricalAllDaysTable() {
@@ -282,6 +354,25 @@ public class SQLiteDatabaseUtil {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 days = c.getString(c.getColumnIndex("days"));
+                c.moveToNext();
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return days;
+    }
+
+    /**
+     * Get Data from HistoricalCountryDays Table
+     */
+    public int getDataFromCountryTimelineDaysTable() {
+        int days = 0;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM CountryTimelineDays", null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                days = c.getInt(c.getColumnIndex("days"));
                 c.moveToNext();
             }
             c.close();
