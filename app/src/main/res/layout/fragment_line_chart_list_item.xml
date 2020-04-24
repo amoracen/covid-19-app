@@ -2,18 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="500dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
-    android:background="@drawable/table_border"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="25dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/titleTextView"
         style="@style/WorldWideStats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:padding="10dp"
         android:text="@string/total">
 
