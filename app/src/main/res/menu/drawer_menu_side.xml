@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_usa"
             android:title="@string/us_states_stats" />
         <item
+            android:id="@+id/nav_OurWorldInData"
+            android:icon="@drawable/ic_analytics"
+            android:title="@string/our_world_in_data" />
+        <item
             android:id="@+id/nav_newsPage"
             android:icon="@drawable/ic_newspaper"
             android:title="@string/news" />
@@ -25,8 +29,15 @@
             android:icon="@drawable/ic_logout"
             android:title="@string/logout" />
     </group>
-    <item android:title="">
-        <menu />
+    <item android:title="@string/setting">
+        <menu>
+            <item
+                android:id="@+id/nav_delete"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/delete_account" />
+        </menu>
+
+
     </item>
 
 </menu>
