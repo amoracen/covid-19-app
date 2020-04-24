@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +25,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
+import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.service.MySingleton;
 
 /**
@@ -36,6 +40,9 @@ public class LineChartFragment extends Fragment {
     private ArrayList<ArrayList> allCases;
     private RecyclerView lineChartRecyclerView;
     private JSONObject casesJSONObject, recoveredJSONObject, deathsJSONObject;
+    private String days;
+    private SQLiteDatabaseUtil sqLiteDatabaseUtil;
+    private TextView errorTextView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,10 +56,21 @@ public class LineChartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lineChartRecyclerView = view.findViewById(R.id.lineChartRecyclerView);
+        errorTextView = view.findViewById(R.id.errorTextView);
         casesYValue = new ArrayList<>();
         deathsYValue = new ArrayList<>();
         recoveredYValue = new ArrayList<>();
         allCases = new ArrayList<>();
+        /*SQLite Database*/
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
+        String query = "CREATE TABLE IF NOT EXISTS HistoricalAll (dates_values  VARCHAR)";
+        String query2 = "CREATE TABLE IF NOT EXISTS HistoricalAllDays (days  VARCHAR)";
+        String query3 = "CREATE TABLE IF NOT EXISTS HistoricalCountry (dates_values  VARCHAR)";
+        String query4 = "CREATE TABLE IF NOT EXISTS HistoricalCountryDays (days  VARCHAR)";
+        sqLiteDatabaseUtil.createTable(query);
+        sqLiteDatabaseUtil.createTable(query2);
+        sqLiteDatabaseUtil.createTable(query3);
+        sqLiteDatabaseUtil.createTable(query4);
     }
 
     /**
@@ -66,27 +84,57 @@ public class LineChartFragment extends Fragment {
     }
 
     public void makeRequest(final String type, String url) {
+        clearAll();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        clearAll();
+                        errorTextView.setVisibility(View.GONE);
                         if (type.equals("Country")) {
                             getDataCountry(response);
+                            /*SAVE to SQLiteDatabase*/
+                            sqLiteDatabaseUtil.checkHistoricalCountryTable(getDays(), response.toString());
                         } else {
                             getDataAll(response);
+                            /*SAVE to SQLiteDatabase*/
+                            sqLiteDatabaseUtil.checkHistoricalAllTable(getDays(), response.toString());
                         }
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        //selectedTextView.setText("Search Failed \n");
+                        Toast.makeText(getContext(), "Line Chart Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                        String savedResponse = null;
+                        String days = null;
+                        try {
+                            if (type.equals("Country")) {
+                                days = sqLiteDatabaseUtil.getDataFromHistoricalCountryDaysTable();
+                                savedResponse = sqLiteDatabaseUtil.getDataFromHistoricalCountryTable();
+                                if (savedResponse != null && days != null) {
+                                    setDays(days);
+                                    JSONObject response = new JSONObject(savedResponse);
+                                    getDataCountry(response);
+                                }
+                            } else {
+                                days = sqLiteDatabaseUtil.getDataFromHistoricalAllDaysTable();
+                                savedResponse = sqLiteDatabaseUtil.getDataFromHistoricalAllTable();
+                                if (savedResponse != null && days != null) {
+                                    setDays(days);
+                                    JSONObject response = new JSONObject(savedResponse);
+                                    getDataAll(response);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (savedResponse == null || days == null) {
+                            errorTextView.setVisibility(View.VISIBLE);
+                            errorTextView.setText(getString(R.string.update_failed));
+                        }
                     }
                 });
-
         // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
@@ -163,18 +211,12 @@ public class LineChartFragment extends Fragment {
                 recoveredYValue.add(new Entry(count, Float.parseFloat(recoveredJSONObject.getString(caseKey))));
                 count += 1;
                 //Format X Axis Labels
-                if (!caseKey.equals("4/20/20") && !caseKey.equals("3/20/20")) {
-                    xAxisList.add(caseKey.replace("/20", ""));
-                } else {
-                    if (caseKey.equals("4/20/20")) {
-                        xAxisList.add("4/20");
-                    } else {
-                        xAxisList.add("3/20");
+                xAxisList.add(caseKey.replaceFirst("/20", ""));
+                //Remove two Days if asking for too many days
+                if (Integer.parseInt(days) >= 25) {
+                    for (int i = 0; i < 2; i++) {
+                        if (casesKeysIterator.hasNext()) casesKeysIterator.next();
                     }
-                }
-                //Remove two Days
-                for (int i = 0; i < 2; i++) {
-                    if (casesKeysIterator.hasNext()) casesKeysIterator.next();
                 }
             }
             allCases.add(casesYValue);
@@ -184,6 +226,30 @@ public class LineChartFragment extends Fragment {
             createGraphs(xAxisList);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set Number of days
+     *
+     * @param days a string
+     */
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    /**
+     * Get Number of days
+     */
+    private String getDays() {
+        return days;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (sqLiteDatabaseUtil != null) {
+            sqLiteDatabaseUtil.close();
         }
     }
 }
