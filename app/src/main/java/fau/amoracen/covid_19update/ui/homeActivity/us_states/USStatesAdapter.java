@@ -136,7 +136,11 @@ public class USStatesAdapter extends RecyclerView.Adapter<USStatesAdapter.USStat
          * @param usStatesData a USStatesData object
          */
         void bind(USStatesData usStatesData) {
-            stateTextView.setText(usStatesData.getState());
+            String stateName = usStatesData.getState();
+            if (stateName.length() > 14) {
+                stateName = stateName.substring(0, 14);
+            }
+            stateTextView.setText(stateName);
             casesTextView.setText(usStatesData.getCases());
             todayCasesTextView.setText(usStatesData.getTodayCases());
             recovered.setText(usStatesData.getRecovered());
