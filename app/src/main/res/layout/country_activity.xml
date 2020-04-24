@@ -182,13 +182,40 @@
                 android:visibility="invisible" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/container_bar_chart"
+        <LinearLayout
+            android:id="@+id/barChartsLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:visibility="invisible" />
+            android:layout_marginTop="15dp"
+            android:background="@drawable/table_border"
+            android:orientation="vertical"
+            android:visibility="visible">
 
+            <TextView
+                android:id="@+id/daysBarTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:text="@string/number_of_days_you_want_the_data"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
 
+            <Spinner
+                android:id="@+id/daysBarSpinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+            </Spinner>
+
+            <FrameLayout
+                android:id="@+id/container_bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="invisible" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
