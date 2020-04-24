@@ -6,8 +6,6 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,9 +23,8 @@ import fau.amoracen.covid_19update.data.NewsArticles;
 /**
  * NewsAdapter manages the list of articles
  */
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterViewHolder> implements Filterable {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterViewHolder> {
     private List<NewsArticles.Articles> articles;
-    private ArrayList<NewsArticles.Articles> articlesFull;
 
     /**
      * Constructor
@@ -37,7 +33,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterVie
      */
     NewsAdapter(NewsArticles.Articles[] articles) {
         this.articles = Arrays.asList(articles);
-        this.articlesFull = new ArrayList<>(this.articles);
     }
 
     @NonNull
@@ -58,42 +53,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterVie
     public int getItemCount() {
         return articles.size();
     }
-
-    @Override
-    public Filter getFilter() {
-        return exampleFilter;
-    }
-
-    /**
-     * Filter the title for the search button
-     */
-    private Filter exampleFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            List<NewsArticles.Articles> filteredList = new ArrayList<>();
-            if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(articlesFull);
-            } else {
-                String filterPattern = charSequence.toString().toLowerCase().trim();
-
-                for (NewsArticles.Articles item : articlesFull) {
-                    if (item.getTitle().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            articles.clear();
-            articles.addAll((List) filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
 
     /**
      * Manages the new layout, used to set the values from the Articles class
@@ -173,6 +132,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterVie
             if (url != null && !url.isEmpty()) {
                 int width = Resources.getSystem().getDisplayMetrics().widthPixels;
                 Picasso.get().load(url).resize(width, width * 2 / 3).centerInside().into(imageView);
+            } else {
+                imageView.setVisibility(View.GONE);
             }
         }
     }
