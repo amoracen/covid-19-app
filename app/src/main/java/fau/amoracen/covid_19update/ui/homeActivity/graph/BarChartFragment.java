@@ -1,9 +1,13 @@
 package fau.amoracen.covid_19update.ui.homeActivity.graph;
 
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,15 +21,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.mikephil.charting.data.BarEntry;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
+import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
 import fau.amoracen.covid_19update.service.MySingleton;
 
 /**
@@ -37,6 +49,10 @@ public class BarChartFragment extends Fragment {
     private ArrayList<BarEntry> newDailyCasesList, newDailyDeathsList, totalCasesList, totalRecoveriesList, totalDeathsList;
     private ArrayList<ArrayList> allCases;
     private RecyclerView barChartRecyclerView;
+    private SQLiteDatabaseUtil sqLiteDatabaseUtil;
+    private int days;
+    private String country;
+    private TextView errorTextView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -50,12 +66,20 @@ public class BarChartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         barChartRecyclerView = view.findViewById(R.id.barChartRecyclerView);
+        errorTextView = view.findViewById(R.id.errorTextView);
         newDailyCasesList = new ArrayList<>();
         newDailyDeathsList = new ArrayList<>();
         totalCasesList = new ArrayList<>();
         totalDeathsList = new ArrayList<>();
         //totalRecoveriesList = new ArrayList<>();
         allCases = new ArrayList<>();
+        /*SQLite Database*/
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
+        String query = "CREATE TABLE IF NOT EXISTS CountryTimeline (dates_values  VARCHAR,country VARCHAR)";
+        String query2 = "CREATE TABLE IF NOT EXISTS CountryTimelineDays (days  INTEGER)";
+        sqLiteDatabaseUtil.createTable(query);
+        sqLiteDatabaseUtil.createTable(query2);
+        JodaTimeAndroid.init(getContext());
     }
 
     /**
@@ -75,21 +99,42 @@ public class BarChartFragment extends Fragment {
      * @param country a string
      */
     public void makeRequest(String country) {
+        clearAll();
         String url = "https://thevirustracker.com/free-api?countryTimeline=" + country;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        clearAll();
+                        errorTextView.setVisibility(View.GONE);
                         getDataCountry(response);
+                        /*SAVE to SQLiteDatabase*/
+                        sqLiteDatabaseUtil.checkCountryTimelineTable(getDays(), getCountry().toLowerCase(), response.toString());
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        //selectedTextView.setText("Search Failed \n");
+                        String savedResponse = null;
+                        int days = 0;
+                        try {
+                            days = sqLiteDatabaseUtil.getDataFromCountryTimelineDaysTable();
+                            savedResponse = sqLiteDatabaseUtil.getDataFromCountryTimelineTable(getCountry().toLowerCase());
+                            if (savedResponse != null && days != 0) {
+                                setDays(days);
+                                JSONObject response = new JSONObject(savedResponse);
+                                getDataCountry(response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (savedResponse == null || days == 0) {
+                            Log.i("Tag", "CountryTimeline NOT Found:" + getCountry());
+                            errorTextView.setVisibility(View.VISIBLE);
+                            errorTextView.setText(getString(R.string.update_failed));
+                        } else {
+                            Toast.makeText(getContext(), "Bar Chart Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
         // Access the RequestQueue through your singleton class.
@@ -121,17 +166,21 @@ public class BarChartFragment extends Fragment {
         int count = 0;
         xAxisList = new ArrayList<>();
         try {
-            /*Remove first days until 3/25/20*/
+            /*Remove first days until*/
+            DateTime now = new DateTime();
+            DateTime weeksAgo = now.minusDays(getDays() + 1);
+            Date weekAgoDate = weeksAgo.toDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yy", Locale.getDefault());
+            String formattedDate = dateFormat.format(weekAgoDate);
             boolean dateFound = false;
             while (casesKeysIterator.hasNext() && !dateFound) {
                 String caseKey = casesKeysIterator.next();
-                if (caseKey.equals("3/25/20")) {
+                if (caseKey.equals(formattedDate)) {
                     dateFound = true;
                 }
             }
 
             while (casesKeysIterator.hasNext()) {
-
                 String caseKey = casesKeysIterator.next();
                 JSONObject date = allData.getJSONObject(caseKey);
                 int newDailyCases = Integer.parseInt(date.getString("new_daily_cases"));
@@ -170,5 +219,45 @@ public class BarChartFragment extends Fragment {
         barChartRecyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         barChartRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (sqLiteDatabaseUtil != null) {
+            sqLiteDatabaseUtil.close();
+        }
+    }
+
+    /**
+     * Set Number of days
+     *
+     * @param days a string
+     */
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    /**
+     * Get Number of days
+     */
+    private int getDays() {
+        return days;
+    }
+
+    /**
+     * Set country
+     *
+     * @param country a string
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    /**
+     * Get country
+     */
+    public String getCountry() {
+        return country;
     }
 }
