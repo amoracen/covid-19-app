@@ -23,6 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.DateTime;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
@@ -54,7 +61,7 @@ public class NewsFragment extends Fragment {
                 if (query.isEmpty()) {
                     return false;
                 }
-                makeRequest(query.trim());
+                makeRequest(query.trim(), getDate());
                 hideKeyboard(getView());
                 return true;
             }
@@ -78,18 +85,27 @@ public class NewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        JodaTimeAndroid.init(getContext());
         NewsRecyclerView = view.findViewById(R.id.newsRecyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         messageTextView = view.findViewById(R.id.errorTextView);
-        makeRequest("COVID");
+        makeRequest("COVID", getDate());
+    }
+
+    public String getDate() {
+        DateTime now = new DateTime();
+        DateTime weeksAgo = now.minusWeeks(1);
+        Date weekAgoDate = weeksAgo.toDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(weekAgoDate);
     }
 
     /**
      * Start the Request to the API
      */
-    private void makeRequest(String topic) {
-        String url = "https://newsapi.org/v2/everything?q=" + topic + "&from=2020-04-16&sortBy=publishedAt&apiKey=" + getContext().getString(R.string.news_api_key) + "&pageSize=50&page=1&language=en";
+    private void makeRequest(String topic, String date) {
+        String url = "https://newsapi.org/v2/everything?q=" + topic + "&from=" + date + "&sortBy=publishedAt&apiKey=" + getContext().getString(R.string.news_api_key) + "&pageSize=50&page=1&language=en";
         APIRequest request = new APIRequest<>(url, NewsArticles.class, new Response.Listener<NewsArticles>() {
             @Override
             public void onResponse(NewsArticles response) {
