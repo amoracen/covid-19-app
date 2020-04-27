@@ -1,9 +1,12 @@
 package fau.amoracen.covid_19update.ui.homeActivity.ourWorldInData;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +53,14 @@ public class WorldInDataFragment extends Fragment {
         /*Daily and total confirmed COVID-19 deaths, World*/
         graphs.add("grapher/total-daily-covid-deaths?yScale=log");
         updateUI(graphs);
+        /*Source*/
+        TextView sourceGraphsTextView = view.findViewById(R.id.sourceGraphsTextView);
+        sourceGraphsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browserIntent("https://ourworldindata.org/coronavirus");
+            }
+        });
     }
 
 
@@ -58,5 +69,16 @@ public class WorldInDataFragment extends Fragment {
         graphsRecyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         graphsRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    /**
+     * Open Browser Intent
+     *
+     * @param url a string
+     */
+    private void browserIntent(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
     }
 }
