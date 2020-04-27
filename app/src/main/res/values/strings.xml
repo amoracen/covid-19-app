@@ -45,7 +45,6 @@
     <string name="recovered">Recovered \n %1$s</string>
     <string name="new_cases">New Cases \n %1$s</string>
     <string name="total_confirmed_cases">Total Confirmed Cases \n %1$s</string>
-    <string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>
     <string name="flag">Flag</string>
     <string name="country">Country </string>
     <string name="total_cases">Total Cases</string>
