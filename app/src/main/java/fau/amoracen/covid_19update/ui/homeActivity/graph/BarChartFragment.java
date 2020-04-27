@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.mikephil.charting.data.BarEntry;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
@@ -74,7 +73,7 @@ public class BarChartFragment extends Fragment {
         //totalRecoveriesList = new ArrayList<>();
         allCases = new ArrayList<>();
         /*SQLite Database*/
-        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(requireContext(), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS CountryTimeline (dates_values  VARCHAR,country VARCHAR)";
         String query2 = "CREATE TABLE IF NOT EXISTS CountryTimelineDays (days  INTEGER)";
         sqLiteDatabaseUtil.createTable(query);
@@ -133,7 +132,7 @@ public class BarChartFragment extends Fragment {
                             errorTextView.setVisibility(View.VISIBLE);
                             errorTextView.setText(getString(R.string.update_failed));
                         } else {
-                            Toast.makeText(getContext(), "Bar Chart Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                            StyleableToast.makeText(getContext(), "Bar Chart Update Failed, Using Last Known Stats", R.style.ToastError).show();
                         }
                     }
                 });
