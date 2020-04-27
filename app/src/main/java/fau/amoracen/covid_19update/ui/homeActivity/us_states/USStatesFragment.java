@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,13 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.USStatesData;
@@ -62,7 +61,7 @@ public class USStatesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*SQLite Database*/
-        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(requireContext(), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS USStatesData (state VARCHAR,cases  VARCHAR,todayCases  VARCHAR,todayDeaths  VARCHAR,deaths VARCHAR," +
                 "active VARCHAR,tests VARCHAR,testsPerOneMillion VARCHAR,recovered VARCHAR)";
         sqLiteDatabaseUtil.createTable(query);
@@ -124,7 +123,7 @@ public class USStatesFragment extends Fragment {
                 if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                     makeRequest();
                 } else {
-                    Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(getContext(), "The Data is up to Date", R.style.ToastPositive).show();
                 }
                 return true;
             }
@@ -157,7 +156,7 @@ public class USStatesFragment extends Fragment {
                 List<USStatesData> response = sqLiteDatabaseUtil.getDataFromUSStatesDataTable();
                 if (response != null && !response.isEmpty()) {
                     setDataUpdatedTextView();
-                    Toast.makeText(getContext(), "Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(getContext(), "Update Failed, Using Last Known Stats", R.style.ToastError).show();
                     updateUI(response);
                 } else {
                     dataUpdatedTextView.setText(getString(R.string.data_updated, "Failed"));
