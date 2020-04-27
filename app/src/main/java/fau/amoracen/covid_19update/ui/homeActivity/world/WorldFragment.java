@@ -1,6 +1,8 @@
 package fau.amoracen.covid_19update.ui.homeActivity.world;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -16,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,11 +25,11 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.GlobalStats;
@@ -85,7 +86,7 @@ public class WorldFragment extends Fragment {
                 if (currentTime >= (timeDataWasUpdated + 720 * 1000)) {
                     makeRequest();
                 } else {
-                    Toast.makeText(getContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(getContext(), "The Data is up to Date", R.style.ToastPositive).show();
                 }
                 return true;
             }
@@ -98,7 +99,7 @@ public class WorldFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*SQLite Database*/
-        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(requireContext(), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS GlobalStats (updated VARCHAR, cases VARCHAR,todayCases VARCHAR,deaths VARCHAR,todayDeaths VARCHAR," +
                 "recovered VARCHAR,active VARCHAR,critical VARCHAR,casesPerOneMillion VARCHAR,deathsPerOneMillion VARCHAR,tests VARCHAR,testsPerOneMillion VARCHAR,affectedCountries VARCHAR)";
         sqLiteDatabaseUtil.createTable(query);
@@ -125,6 +126,15 @@ public class WorldFragment extends Fragment {
         lineChartFragment = new LineChartFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.container_pie_chart, pieChartFragment).commit();
         getChildFragmentManager().beginTransaction().replace(R.id.container_line_chart, lineChartFragment).commit();
+
+        /*Sources*/
+        TextView sourceTextView = view.findViewById(R.id.sourceTextView);
+        sourceTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browserIntent("https://www.worldometers.info/coronavirus/");
+            }
+        });
 
         Spinner spinner = view.findViewById(R.id.daysSpinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.days, R.layout.spinner_item);
@@ -187,7 +197,7 @@ public class WorldFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                pieChartFragment.createPieChart(Objects.requireNonNull(getContext()), response.getActiveNoFormat(), response.getRecoveredNoFormat(), response.getDeathsNoFormat());
+                pieChartFragment.createPieChart(requireContext(), response.getActiveNoFormat(), response.getRecoveredNoFormat(), response.getDeathsNoFormat());
                 pieChartFragmentLayout.setVisibility(View.VISIBLE);
             }
         }, TIME_OUT);
@@ -225,7 +235,7 @@ public class WorldFragment extends Fragment {
                 GlobalStats savedInDatabase = sqLiteDatabaseUtil.getDataFromGlobalStatsTable();
 
                 if (savedInDatabase != null && savedInDatabase.getUpdated() != null) {
-                    Toast.makeText(getContext(), "Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(getContext(), "Update Failed, Using Last Known Stats", R.style.ToastError).show();
                     updateUI(savedInDatabase);
                 } else {
                     dataUpdatedTextView.setText(getString(R.string.data_updated, "Failed"));
@@ -235,6 +245,17 @@ public class WorldFragment extends Fragment {
         });
         // Add a request to your RequestQueue.
         MySingleton.getInstance(getContext()).addToRequestQueue(request);
+    }
+
+    /**
+     * Open Browser Intent
+     *
+     * @param url a string
+     */
+    private void browserIntent(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     @Override
