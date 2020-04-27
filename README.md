@@ -24,11 +24,11 @@
 <img src="./img/1.jpg" alt="App Screen" width="100"/>
 <img src="./img/2.jpg" alt="App Screen" width="100"/>
 <img src="./img/3.jpg" alt="App Screen" width="100"/>
-<img src="./img/4.jpg" alt="App Screen" width="100"/>
+<img src="./img/4.jpg" alt="App Screen" width="100" height="188"/>
 <img src="./img/5.jpg" alt="App Screen" width="100"/>
 <img src="./img/6.jpg" alt="App Screen" width="100"/>
-<img src="./img/7.jpg" alt="App Screen" width="100"/>
-<img src="./img/8.jpg" alt="App Screen" width="100"/>
-<img src="./img/9.jpg" alt="App Screen" width="100"/>
+<img src="./img/7.jpg" alt="App Screen" width="100" height="188"/>
+<img src="./img/8.jpg" alt="App Screen" width="100" height="188"/>
+<img src="./img/9.jpg" alt="App Screen" width="100" height="188"/>
 <img src="./img/10.jpg" alt="App Screen" width="100"/>
 </p>
