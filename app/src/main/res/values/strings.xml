@@ -87,5 +87,7 @@
     <string name="latest_news">Latest News</string>
     <string name="news_article">News Article</string>
     <string name="title">Title</string>
+    <string name="source">Source</string>
+    <string name="powered_by_news_api">Powered by News API</string>
     <!--getString(R.string.welcome_message, "Test", 0);-->
 </resources>
