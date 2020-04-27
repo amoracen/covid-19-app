@@ -13,12 +13,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -125,10 +126,10 @@ public class RegistrationFragment extends Fragment implements FirebaseUtil.Fireb
             //Go to Home Screen
             Intent goToHomeScreen = new Intent(getContext(), HomeActivity.class);
             startActivity(goToHomeScreen);
-            Objects.requireNonNull(getActivity()).finishAffinity();
+            requireActivity().finishAffinity();
         } else {
             Log.i("Failed Registration", result);
-            Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+            StyleableToast.makeText(requireContext(), result, R.style.ToastError).show();
         }
     }
 }

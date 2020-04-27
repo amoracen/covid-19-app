@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,6 +11,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.util.Objects;
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseUtil.Fire
             //If the user is logged in, go to Home Activity
             goToHomeScreen();
         } else {
-            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+            StyleableToast.makeText(this, result, R.style.ToastError).show();
         }
     }
 

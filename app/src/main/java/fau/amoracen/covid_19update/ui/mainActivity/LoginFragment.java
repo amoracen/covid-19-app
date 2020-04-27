@@ -13,19 +13,20 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.muddzdev.styleabletoast.StyleableToast;
+
 import java.util.HashMap;
 import java.util.Objects;
 
+import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.service.FirebaseUtil;
 import fau.amoracen.covid_19update.ui.homeActivity.HomeActivity;
-import fau.amoracen.covid_19update.R;
 
 /**
  * Manages Login Form
@@ -125,10 +126,10 @@ public class LoginFragment extends Fragment implements FirebaseUtil.FirebaseUtil
             /*Go to Home Screen*/
             Intent goToHomeScreen = new Intent(getContext(), HomeActivity.class);
             startActivity(goToHomeScreen);
-            Objects.requireNonNull(getActivity()).finishAffinity();
+            requireActivity().finishAffinity();
         } else {
             Log.i("Failed Login", result);
-            Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+            StyleableToast.makeText(requireContext(), result, R.style.ToastError).show();
         }
     }
 }
