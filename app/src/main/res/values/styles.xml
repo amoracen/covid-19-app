@@ -101,4 +101,30 @@
         <item name="android:minWidth">125dp</item>
         <item name="android:maxWidth">125dp</item>
     </style>
+    <!--Positive Toast Style-->
+    <style name="ToastPositive">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">@color/colorWhite</item>
+        <item name="stTextSize">16sp</item>
+        <item name="stColorBackground">@color/holo_blue</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stLength">LONG</item>
+        <item name="stIconStart">@drawable/ic_star</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">25dp</item>
+    </style>
+    <!--Error Toast Style-->
+    <style name="ToastError">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">@color/colorWhite</item>
+        <item name="stTextSize">16sp</item>
+        <item name="stColorBackground">@color/holo_red_light</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stStrokeWidth">5dp</item>
+        <item name="stStrokeColor">@color/holo_orange_dark</item>
+        <item name="stIconStart">@drawable/ic_error</item>
+        <item name="stLength">LONG</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">25dp</item>
+    </style>
 </resources>
