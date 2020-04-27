@@ -1,12 +1,13 @@
 package fau.amoracen.covid_19update.ui.homeActivity.graph;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.mikephil.charting.data.Entry;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +28,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.database.SQLiteDatabaseUtil;
@@ -63,7 +64,7 @@ public class LineChartFragment extends Fragment {
         recoveredYValue = new ArrayList<>();
         allCases = new ArrayList<>();
         /*SQLite Database*/
-        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(Objects.requireNonNull(getContext()), "Stats");
+        sqLiteDatabaseUtil = new SQLiteDatabaseUtil(requireContext(), "Stats");
         String query = "CREATE TABLE IF NOT EXISTS HistoricalAll (dates_values  VARCHAR)";
         String query2 = "CREATE TABLE IF NOT EXISTS HistoricalAllDays (days  VARCHAR)";
         String query3 = "CREATE TABLE IF NOT EXISTS HistoricalCountry (dates_values  VARCHAR,country VARCHAR)";
@@ -72,6 +73,13 @@ public class LineChartFragment extends Fragment {
         sqLiteDatabaseUtil.createTable(query2);
         sqLiteDatabaseUtil.createTable(query3);
         sqLiteDatabaseUtil.createTable(query4);
+        TextView sourceLineChartTextView = view.findViewById(R.id.sourceLineChartTextView);
+        sourceLineChartTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browserIntent("https://github.com/CSSEGISandData/COVID-19");
+            }
+        });
     }
 
     /**
@@ -139,7 +147,7 @@ public class LineChartFragment extends Fragment {
                             errorTextView.setVisibility(View.VISIBLE);
                             errorTextView.setText(getString(R.string.update_failed));
                         } else {
-                            Toast.makeText(getContext(), "Line Chart Update Failed, Using Last Known Stats", Toast.LENGTH_LONG).show();
+                            StyleableToast.makeText(getContext(), "Line Chart Update Failed, Using Last Known Stats", R.style.ToastError).show();
                         }
                     }
                 });
@@ -259,6 +267,17 @@ public class LineChartFragment extends Fragment {
         if (sqLiteDatabaseUtil != null) {
             sqLiteDatabaseUtil.close();
         }
+    }
+
+    /**
+     * Open Browser Intent
+     *
+     * @param url a string
+     */
+    private void browserIntent(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     public String getCountry() {
