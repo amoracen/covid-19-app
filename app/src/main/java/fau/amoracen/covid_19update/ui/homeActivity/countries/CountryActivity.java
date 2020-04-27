@@ -2,6 +2,7 @@ package fau.amoracen.covid_19update.ui.homeActivity.countries;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -14,13 +15,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.muddzdev.styleabletoast.StyleableToast;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -68,7 +69,7 @@ public class CountryActivity extends AppCompatActivity {
             if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                 makeRequest(CountryData.URLCountry + country.getCountry());
             } else {
-                Toast.makeText(getApplicationContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+                StyleableToast.makeText(getApplicationContext(), "The Data is up to Date", R.style.ToastPositive).show();
             }
             return true;
         }
@@ -145,6 +146,15 @@ public class CountryActivity extends AppCompatActivity {
 
             }
         });
+
+        /*Source*/
+        TextView sourceTextView = findViewById(R.id.sourceTextView);
+        sourceTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browserIntent("https://www.worldometers.info/coronavirus/");
+            }
+        });
     }
 
 
@@ -161,7 +171,7 @@ public class CountryActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_LONG).show();
+                StyleableToast.makeText(getApplicationContext(), "Update Failed, Using Last Known Stats", R.style.ToastError).show();
                 finish();
             }
         });
@@ -239,5 +249,16 @@ public class CountryActivity extends AppCompatActivity {
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
             Picasso.get().load(url).resize(200, 150).centerInside().into(imageView);
         }
+    }
+
+    /**
+     * Open Browser Intent
+     *
+     * @param url a string
+     */
+    private void browserIntent(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
     }
 }
