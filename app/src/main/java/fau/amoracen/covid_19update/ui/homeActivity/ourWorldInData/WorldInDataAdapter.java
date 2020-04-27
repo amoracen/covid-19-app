@@ -73,7 +73,8 @@ public class WorldInDataAdapter extends RecyclerView.Adapter<WorldInDataAdapter.
             webView.getSettings().setAllowFileAccess(true);
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setLoadWithOverviewMode(true);
-            //webView.getSettings().setBuiltInZoomControls(true);
+            webView.getSettings().setBuiltInZoomControls(true);
+            webView.getSettings().setDisplayZoomControls(false);
             webView.getSettings().setUseWideViewPort(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {

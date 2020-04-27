@@ -1,6 +1,9 @@
 package fau.amoracen.covid_19update.ui.homeActivity.ourWorldInData;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.util.ArrayList;
 
@@ -38,29 +43,33 @@ public class WorldInDataFragment extends Fragment {
 
         graphsRecyclerView = view.findViewById(R.id.graphsRecyclerView);
         ArrayList<String> graphs = new ArrayList<>();
-        /*Total Confirmed Cases World*/
-        graphs.add("grapher/total-cases-covid-19");
-        /*Daily confirmed COVID-19 cases*/
-        graphs.add("grapher/daily-covid-cases-3-day-average?country=FRA+ESP+GBR+USA");
-        /*Daily confirmed COVID-19 deaths*/
-        graphs.add("grapher/daily-deaths-covid-19?country=USA+OWID_WRL");
-        /*Daily confirmed COVID-19 cases per million people*/
-        graphs.add("grapher/new-covid-cases-per-million?region=NorthAmerica");
-        /*Daily confirmed COVID-19 deaths per million people,*/
-        graphs.add("grapher/new-covid-deaths-per-million?region=NorthAmerica");
-        /*Number of COVID-19 tests per confirmed case*/
-        graphs.add("grapher/number-of-covid-19-tests-per-confirmed-case");
-        /*Daily and total confirmed COVID-19 deaths, World*/
-        graphs.add("grapher/total-daily-covid-deaths?yScale=log");
-        updateUI(graphs);
-        /*Source*/
-        TextView sourceGraphsTextView = view.findViewById(R.id.sourceGraphsTextView);
-        sourceGraphsTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                browserIntent("https://ourworldindata.org/coronavirus");
-            }
-        });
+        if (isConnected(requireContext()) || isWifi(requireContext())) {
+            /*Total Confirmed Cases World*/
+            graphs.add("grapher/total-cases-covid-19");
+            /*Daily confirmed COVID-19 cases*/
+            graphs.add("grapher/daily-covid-cases-3-day-average?country=FRA+ESP+GBR+USA");
+            /*Daily confirmed COVID-19 deaths*/
+            graphs.add("grapher/daily-deaths-covid-19?country=USA+OWID_WRL");
+            /*Daily confirmed COVID-19 cases per million people*/
+            graphs.add("grapher/new-covid-cases-per-million?region=NorthAmerica");
+            /*Daily confirmed COVID-19 deaths per million people,*/
+            graphs.add("grapher/new-covid-deaths-per-million?region=NorthAmerica");
+            /*Number of COVID-19 tests per confirmed case*/
+            graphs.add("grapher/number-of-covid-19-tests-per-confirmed-case");
+            /*Daily and total confirmed COVID-19 deaths, World*/
+            graphs.add("grapher/total-daily-covid-deaths?yScale=log");
+            updateUI(graphs);
+            /*Source*/
+            TextView sourceGraphsTextView = view.findViewById(R.id.sourceGraphsTextView);
+            sourceGraphsTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    browserIntent("https://ourworldindata.org/coronavirus");
+                }
+            });
+        } else {
+            StyleableToast.makeText(getContext(), "No Access to Internet Available", R.style.ToastError).show();
+        }
     }
 
 
@@ -80,5 +89,27 @@ public class WorldInDataFragment extends Fragment {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(url));
         startActivity(browserIntent);
+    }
+
+    private boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    private boolean isWifi(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        assert activeNetwork != null;
+        try {
+            return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
