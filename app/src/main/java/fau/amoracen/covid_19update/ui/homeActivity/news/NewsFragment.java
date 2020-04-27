@@ -1,6 +1,8 @@
 package fau.amoracen.covid_19update.ui.homeActivity.news;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +32,6 @@ import org.joda.time.DateTime;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.data.NewsArticles;
@@ -91,6 +92,15 @@ public class NewsFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         messageTextView = view.findViewById(R.id.errorTextView);
         makeRequest("COVID", getDate());
+
+        /*Source*/
+        TextView sourceNewsTextView = view.findViewById(R.id.sourceNewsTextView);
+        sourceNewsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browserIntent("https://newsapi.org/docs/get-started");
+            }
+        });
     }
 
     public String getDate() {
@@ -147,11 +157,22 @@ public class NewsFragment extends Fragment {
      */
     private void hideKeyboard(View view) {
         try {
-            InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             assert inputMethodManager != null;
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Open Browser Intent
+     *
+     * @param url a string
+     */
+    private void browserIntent(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
     }
 }
