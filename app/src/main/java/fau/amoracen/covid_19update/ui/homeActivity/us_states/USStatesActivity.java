@@ -1,6 +1,7 @@
 package fau.amoracen.covid_19update.ui.homeActivity.us_states;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -9,13 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class USStatesActivity extends AppCompatActivity {
             if (currentTime >= (timeDataWasUpdated + 900 * 1000)) {
                 makeRequest(USStatesData.URLState + state.getState());
             } else {
-                Toast.makeText(getApplicationContext(), "The Data is up to Date", Toast.LENGTH_LONG).show();
+                StyleableToast.makeText(getApplicationContext(), "The Data is up to Date", R.style.ToastPositive).show();
             }
 
             return true;
@@ -91,6 +92,14 @@ public class USStatesActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container_pie_chart, pieChartFragment).commit();
             updateUI(state);
         }
+        /*Source*/
+        TextView sourceTextView = findViewById(R.id.sourceTextView);
+        sourceTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browserIntent("https://www.worldometers.info/coronavirus/");
+            }
+        });
     }
 
     /**
@@ -106,7 +115,7 @@ public class USStatesActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_LONG).show();
+                StyleableToast.makeText(getApplicationContext(), "Update Failed", R.style.ToastError).show();
                 finish();
             }
         });
@@ -143,5 +152,16 @@ public class USStatesActivity extends AppCompatActivity {
                 pieChartFragmentLayout.setVisibility(View.VISIBLE);
             }
         }, TIME_OUT);
+    }
+
+    /**
+     * Open Browser Intent
+     *
+     * @param url a string
+     */
+    private void browserIntent(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
     }
 }
