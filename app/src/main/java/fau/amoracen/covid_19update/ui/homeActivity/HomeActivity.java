@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -28,6 +27,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import fau.amoracen.covid_19update.R;
 import fau.amoracen.covid_19update.service.CustomAlertDialog;
@@ -224,15 +224,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 // Method that allows logout
                                 FirebaseUtil.getInstance().signOut();
                                 Log.d("Deleted", "User account deleted!");
-                                Toast.makeText(getApplicationContext(), "Account Delete", Toast.LENGTH_LONG).show();
+                                StyleableToast.makeText(getApplicationContext(), "Account Deleted", R.style.ToastPositive).show();
                                 returnToMainActivity();
                             } else {
-                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                StyleableToast.makeText(getApplicationContext(), task.getException().getMessage(), R.style.ToastError).show();
                             }
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(getApplicationContext(), task.getException().getMessage(), R.style.ToastError).show();
                 }
             }
         });
