@@ -93,6 +93,19 @@
             android:text="@string/test_per_one_million"
             android:textColor="@android:color/holo_blue_bright" />
 
+        <TextView
+            android:id="@+id/sourceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="5dp"
+            android:drawableEnd="@drawable/ic_open_in_new_24dp"
+            android:drawablePadding="5dp"
+            android:padding="5dp"
+            android:text="@string/source"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="16sp" />
+
         <FrameLayout
             android:id="@+id/container_pie_chart"
             android:layout_width="match_parent"
