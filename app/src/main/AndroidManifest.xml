@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="fau.amoracen.covid_19update">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,21 +12,34 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".ui.homeActivity.news.NewsActivity"
+            android:configChanges="orientation"
             android:parentActivityName=".ui.homeActivity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
         <activity
             android:name=".ui.homeActivity.countries.CountryActivity"
+            android:configChanges="orientation"
             android:parentActivityName=".ui.homeActivity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
         <activity
             android:name=".ui.homeActivity.us_states.USStatesActivity"
+            android:configChanges="orientation"
             android:parentActivityName=".ui.homeActivity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
-        <activity android:name=".ui.homeActivity.HomeActivity" />
-        <activity android:name=".ui.mainActivity.MainActivity">
+        <activity
+            android:name=".ui.homeActivity.HomeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mainActivity.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
