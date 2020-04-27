@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class NewsArticles implements Serializable {
 
-    String status;
-    String totalResults;
-    Articles[] articles;
+    private String status;
+    private String totalResults;
+    private Articles[] articles;
 
     public String getStatus() {
         return status;
@@ -37,7 +37,14 @@ public class NewsArticles implements Serializable {
      * Class Articles
      */
     public static class Articles implements Serializable {
-        Source source;
+        private Source source;
+        private String author;
+        private String title;
+        private String description;
+        private String url;
+        private String urlToImage;
+        private String publishedAt;
+        private String content;
 
         public Source getSource() {
             return source;
@@ -124,15 +131,5 @@ public class NewsArticles implements Serializable {
                 this.name = name;
             }
         }
-
-        String author;
-        String title;
-        String description;
-        String url;
-        String urlToImage;
-        String publishedAt;
-        String content;
-
     }//EOF Class Articles
-
 }
